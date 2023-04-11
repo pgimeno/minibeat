@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:minibeat/screens/register.dart';
 import 'package:minibeat/utils/constants.dart';
 
-class loginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  State<loginScreen> createState() => _loginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _loginScreenState extends State<loginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  //Falta donar espais
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +119,10 @@ class _loginScreenState extends State<loginScreen> {
                 onTap: (){
                   // Open register screen
                   print('tapped!!');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterScreen()));
                 },
                 child: Text(
                   'Registra\'t',

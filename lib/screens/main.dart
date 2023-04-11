@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
+import 'package:minibeat/screens/register.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: createCustomLightTheme(),
-      home: loginScreen(),
+      initialRoute: '/',
+      routes: {
+        '/':(context) => LoginScreen(),
+        '/register':(context) =>  RegisterScreen(),
+      },
     );
   }
 }
