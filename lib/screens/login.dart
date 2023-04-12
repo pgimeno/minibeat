@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/screens/register.dart';
 import 'package:minibeat/utils/constants.dart';
+import 'package:minibeat/screens/menu.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,18 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0, bottom: 38.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18.0),
-                  child: Image.asset(
-                    'images/minibeatlogo.JPG',
-                    width: 145,
-                    height: 145,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              IconImage(),
               TitolPantalla(),
               SubtitolPantalla(),
               SizedBox(height: 20),
@@ -42,6 +32,28 @@ class _LoginScreenState extends State<LoginScreen> {
               GoToRegisterScreenText(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class IconImage extends StatelessWidget {
+  const IconImage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0, bottom: 38.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18.0),
+        child: Image.asset(
+          'images/minibeatlogo.JPG',
+          width: 145,
+          height: 145,
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -60,9 +72,7 @@ class GoToRegisterScreenText extends StatelessWidget {
         // Open register screen
         print('tapped!!');
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => RegisterScreen()));
+            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
       },
       child: Text(
         'Registra\'t',
@@ -87,7 +97,9 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Do something when button is pressed
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MenuScreen()));
+
       },
       child: Text(
         'Inicia sessió',
@@ -101,8 +113,7 @@ class LoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
-        padding:
-            EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
       ),
     );
   }

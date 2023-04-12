@@ -44,7 +44,7 @@ ThemeData createCustomLightTheme() {
       bodyMedium:
           TextStyle(fontFamily: 'Hind', fontSize: 25, color: Colors.black),
       bodySmall:
-          TextStyle(fontFamily: 'Hind', fontSize: 15, color: Colors.black),
+          TextStyle(fontFamily: 'Hind', fontSize: 17, color: Colors.black),
       bodyLarge:
           TextStyle(fontFamily: 'Hind', fontSize: 45, color: Colors.black),
     ),

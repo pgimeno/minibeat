@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
+import 'package:minibeat/screens/menu.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -140,7 +141,8 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Do something when button is pressed
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MenuScreen()));
       },
       child: Text(
         'Registra\'t',
