@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/screens/login.dart';
+import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/utils/constants.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -160,7 +162,8 @@ class RankingButton extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
         onPressed: () {
-          // Do something when button is pressed
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => RankingScreen()));
         },
         child: Text(
           'Ranking',
@@ -239,7 +242,8 @@ class DisconnectButtonText extends StatelessWidget {
             TextButton(
               onPressed: () {
                 //Navigator.pop(context, true);
-                SystemNavigator.pop();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               child: Text('Si'),
             ),
