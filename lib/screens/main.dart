@@ -13,13 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'MiniBeat Go!',
       theme: createCustomLightTheme(),
-      initialRoute: '/',
-      routes: {
-        '/':(context) => LoginScreen(),
-        '/register':(context) =>  RegisterScreen(),
-      },
+      home: LoginScreen(),
     );
   }
 }
@@ -45,10 +41,12 @@ ThemeData createCustomLightTheme() {
       selectedItemColor: kMiniBeatMainColor,
     ),
     textTheme: TextTheme(
-      bodyMedium: TextStyle(fontFamily: 'Hind', fontSize: 25, color: Colors.black),
-      bodySmall: TextStyle(fontFamily: 'Hind', fontSize: 15, color: Colors.black),
-      bodyLarge: TextStyle(fontFamily: 'Hind', fontSize: 45, color: Colors.black),
-
+      bodyMedium:
+          TextStyle(fontFamily: 'Hind', fontSize: 25, color: Colors.black),
+      bodySmall:
+          TextStyle(fontFamily: 'Hind', fontSize: 15, color: Colors.black),
+      bodyLarge:
+          TextStyle(fontFamily: 'Hind', fontSize: 45, color: Colors.black),
     ),
   );
 }
