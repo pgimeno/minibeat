@@ -13,36 +13,47 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            AvatarImage(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hola ',
-                  style: TextStyle(fontSize: 33),
-                ),
-                UserNameText(),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star, color: kMiniBeatMainColor),
-                SizedBox(width: 4),
-                Text('9999'),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            StartPlayButton(),
-
-            RankingButton(),
-            DisconnectButtonText(),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              kMiniBeatGradientFirst,
+              kMiniBeatGradientLast,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              AvatarImage(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Hola ',
+                    style: TextStyle(fontSize: 33),
+                  ),
+                  UserNameText(),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.star, color: kMiniBeatMainColor),
+                  SizedBox(width: 4),
+                  Text('9999', style: TextStyle(fontSize: 23),),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              StartPlayButton(),
+              RankingButton(),
+              DisconnectButtonText(),
+            ],
+          ),
         ),
       ),
     );
@@ -212,28 +223,32 @@ class DisconnectButtonText extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('T\'estas a punt de desconectar.', style: TextStyle(color: Colors.black),),
-          content: Text('N\'estas segur/a?', style: TextStyle(color: Colors.black)),
+          title: Text(
+            'T\'estas a punt de desconectar.',
+            style: TextStyle(color: Colors.black),
+          ),
+          content:
+              Text('N\'estas segur/a?', style: TextStyle(color: Colors.black)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context, false);
               },
-              child: Text('Cancel'),
+              child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
                 //Navigator.pop(context, true);
                 SystemNavigator.pop();
               },
-              child: Text('OK'),
+              child: Text('Si'),
             ),
           ],
         );
       },
     ).then((value) {
       if (value == true) {
-        // Do something to log out the user
+        // LOG OUT DE l'USUARI!!!
       }
     });
   }
@@ -257,4 +272,3 @@ class DisconnectButtonText extends StatelessWidget {
     );
   }
 }
-

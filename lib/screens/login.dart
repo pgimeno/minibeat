@@ -9,7 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
+  final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TitolPantalla(),
               SubtitolPantalla(),
               SizedBox(height: 20),
-              TextFieldEmail(emailController: _emailController),
+              TextFieldUserName(userNameController: _userNameController),
               TextFieldPassword(passwordController: _passwordController),
               SizedBox(height: 50),
               LoginButton(),
@@ -153,19 +153,19 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
   }
 }
 
-class TextFieldEmail extends StatefulWidget {
-  const TextFieldEmail({
+class TextFieldUserName extends StatefulWidget {
+  const TextFieldUserName({
     super.key,
-    required TextEditingController emailController,
-  }) : _emailController = emailController;
+    required TextEditingController userNameController,
+  }) : _userNameController = userNameController;
 
-  final TextEditingController _emailController;
+  final TextEditingController _userNameController;
 
   @override
-  State<TextFieldEmail> createState() => _TextFieldEmailState();
+  State<TextFieldUserName> createState() => _TextFieldUserNameState();
 }
 
-class _TextFieldEmailState extends State<TextFieldEmail> {
+class _TextFieldUserNameState extends State<TextFieldUserName> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -176,9 +176,9 @@ class _TextFieldEmailState extends State<TextFieldEmail> {
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.center,
-        controller: widget._emailController,
+        controller: widget._userNameController,
         decoration: InputDecoration(
-          hintText: 'Email',
+          hintText: 'Nom d\'usuari',
           border: UnderlineInputBorder(),
         ),
       ),

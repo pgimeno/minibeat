@@ -9,7 +9,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _emailController = TextEditingController();
+  final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               TitolPantalla(),
               SizedBox(height: 40),
-              TextFieldEmail(emailController: _emailController),
+              TextFieldUserName(usernameController: _userNameController),
               TextFieldPassword(passwordController: _passwordController),
               TextFieldPasswordConfirm(
                   passwordControllerChecker: _passwordControllerChecker),
@@ -231,19 +231,19 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
   }
 }
 
-class TextFieldEmail extends StatefulWidget {
-  const TextFieldEmail({
+class TextFieldUserName extends StatefulWidget {
+  const TextFieldUserName({
     super.key,
-    required TextEditingController emailController,
-  }) : _emailController = emailController;
+    required TextEditingController usernameController,
+  }) : _userNameController = usernameController;
 
-  final TextEditingController _emailController;
+  final TextEditingController _userNameController;
 
   @override
-  State<TextFieldEmail> createState() => _TextFieldEmailState();
+  State<TextFieldUserName> createState() => _TextFieldUserNameState();
 }
 
-class _TextFieldEmailState extends State<TextFieldEmail> {
+class _TextFieldUserNameState extends State<TextFieldUserName> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -254,9 +254,9 @@ class _TextFieldEmailState extends State<TextFieldEmail> {
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.center,
-        controller: widget._emailController,
+        controller: widget._userNameController,
         decoration: InputDecoration(
-          hintText: 'Email',
+          hintText: 'Nom d\'usuari',
           border: UnderlineInputBorder(),
         ),
       ),
