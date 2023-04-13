@@ -53,9 +53,10 @@ class RadarBuscant extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SpinKitPulse(
+        SpinKitRipple(
           color: kMiniBeatMainColor,
-          duration: Duration(seconds: 1, milliseconds: 500),
+          borderWidth: 7,
+          duration: Duration(milliseconds: 500),
           size: 250.0,
         ),
         SizedBox(
@@ -77,11 +78,6 @@ class RadarBuscant extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator()),
-                  SizedBox(width: 10),
                   Text(
                     'El radar està funcionant',
                     style: TextStyle(fontSize: 20),
