@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:minibeat/screens/menu.dart';
@@ -16,7 +17,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return Scaffold(
+      //Avoid yellow lines
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -62,6 +68,8 @@ class GoToLoginScreenText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        //amagar teclat quan apretes botó
+        FocusManager.instance.primaryFocus?.unfocus();
         // Open register screen
         print('tapped!!');
         Navigator.push(
@@ -141,6 +149,8 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        //amagar teclat quan apretes botó
+        //FocusManager.instance.primaryFocus?.unfocus();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MenuScreen()));
       },

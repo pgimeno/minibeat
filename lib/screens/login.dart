@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -97,6 +98,10 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+
+        //amagar teclat quan apretes botó
+        FocusManager.instance.primaryFocus?.unfocus();
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MenuScreen()));
 

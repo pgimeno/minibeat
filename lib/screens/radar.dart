@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:vibration/vibration.dart';
+import 'dart:async';
+
+String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
+String missatgeDetectat = 'S\'ha detectat un miniBeat a prop!';
+bool isSearching = true;
+
+String checkMessageToShow() {
+  if (isSearching) {
+    return missatgeInicial;
+  } else {
+    return missatgeDetectat;
+  }
+}
 
 class RadarScreen extends StatefulWidget {
   @override
@@ -8,8 +22,8 @@ class RadarScreen extends StatefulWidget {
 }
 
 class _RadarScreenState extends State<RadarScreen> {
-  String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
-  bool isSearching = true;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +43,11 @@ class _RadarScreenState extends State<RadarScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextMissatgeTop(missatgeInicial: missatgeInicial),
+              TextMissatgeTop(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (isSearching) RadarBuscant() else Column(),
+                  if (isSearching) RadarBuscant() else RadarHasFound(),
                 ],
               )
             ],
@@ -41,6 +55,15 @@ class _RadarScreenState extends State<RadarScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    Timer(Duration(seconds: 5), () {
+      setState(() {
+        isSearching = false;
+      });
+    });
   }
 }
 
@@ -56,37 +79,78 @@ class RadarBuscant extends StatelessWidget {
         SpinKitRipple(
           color: kMiniBeatMainColor,
           borderWidth: 7,
-          duration: Duration(milliseconds: 500),
+          duration: Duration(seconds: 2, milliseconds: 500),
           size: 250.0,
         ),
         SizedBox(
           height: 100,
         ),
         Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+          padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
           decoration: BoxDecoration(
             color: Colors.black26.withAlpha(1),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: kMiniBeatMainColor,
                 blurRadius: 1,
               ),
             ],
           ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    'El radar està funcionant',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
+              Text(
+                'El radar està funcionant',
+                style: TextStyle(fontSize: 17, color: Colors.white),
               ),
               Text(
                 'Buscant!',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 17, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RadarHasFound extends StatelessWidget {
+  const RadarHasFound({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Vibration.vibrate(duration: 2000);
+
+    return Column(
+      children: [
+        CircleOpenCamera(),
+        SizedBox(
+          height: 100,
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+          decoration: BoxDecoration(
+            color: Colors.black26.withAlpha(1),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: kMiniBeatMainColor,
+                blurRadius: 1,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                'S\'obrirà la càmera',
+                style: TextStyle(fontSize: 17, color: Colors.white),
+              ),
+              Text(
+                'Busca el miniBeat al teu voltant',
+                style: TextStyle(fontSize: 17, color: Colors.white),
               ),
             ],
           ),
@@ -97,20 +161,53 @@ class RadarBuscant extends StatelessWidget {
 }
 
 class TextMissatgeTop extends StatelessWidget {
-  const TextMissatgeTop({
-    super.key,
-    required this.missatgeInicial,
-  });
-
-  final String missatgeInicial;
+  const TextMissatgeTop({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: Text(
-      missatgeInicial,
+      checkMessageToShow(),
       style: TextStyle(color: Colors.black, fontSize: 26),
       textAlign: TextAlign.center,
     ));
+  }
+}
+
+class CircleOpenCamera extends StatelessWidget {
+  const CircleOpenCamera({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print('tapped');
+      },
+      child: Stack(
+        children: [
+          Container(
+            width: 250.0,
+            height: 250.0,
+            decoration: BoxDecoration(
+              color: kMiniBeatMainColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Obrir la càmera!',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

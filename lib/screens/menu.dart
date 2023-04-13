@@ -16,6 +16,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -169,7 +170,7 @@ class RankingButton extends StatelessWidget {
         child: Text(
           'Ranking',
           style: TextStyle(
-            fontSize: 20.0,
+            fontSize: 15.0,
             color: Colors.white,
           ),
         ),
@@ -193,7 +194,7 @@ class StartPlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
@@ -202,7 +203,7 @@ class StartPlayButton extends StatelessWidget {
         child: Text(
           'Comença a jugar!',
           style: TextStyle(
-            fontSize: 20.0,
+            fontSize: 16.0,
             color: Colors.white,
           ),
         ),
@@ -265,14 +266,17 @@ class DisconnectButtonText extends StatelessWidget {
       onTap: () {
         _logout(context);
       },
-      child: Text(
-        'Desconectar',
-        style: TextStyle(
-          decoration: TextDecoration.underline,
-          decorationThickness: 0.3,
-          fontWeight: FontWeight.bold,
-          color: Colors.black45,
-          fontSize: 18,
+      child: Padding(
+        padding: const EdgeInsets.only(top:60.0),
+        child: Text(
+          'Desconectar',
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            decorationThickness: 0.3,
+            fontWeight: FontWeight.bold,
+            color: Colors.black45,
+            fontSize: 15,
+          ),
         ),
       ),
     );
