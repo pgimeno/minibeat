@@ -23,35 +23,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       //Avoid yellow lines
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TitolPantalla(),
-              SizedBox(height: 40),
-              TextFieldUserName(usernameController: _userNameController),
-              TextFieldPassword(passwordController: _passwordController),
-              TextFieldPasswordConfirm(
-                  passwordControllerChecker: _passwordControllerChecker),
-              SizedBox(height: 50),
-              RegisterButton(),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Checkbox(
-                      value: _isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _isChecked = value ?? false;
-                        });
-                      }),
-                  AgreementText(),
-                ],
-              ),
-              SizedBox(height: 20),
-              GoToLoginScreenText(),
+      body: Container(width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              kMiniBeatGradientFirst,
+              kMiniBeatGradientLast,
             ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TitolPantalla(),
+                SubtitolPantalla(),
+                SizedBox(height: 40),
+                TextFieldUserName(usernameController: _userNameController),
+                TextFieldPassword(passwordController: _passwordController),
+                TextFieldPasswordConfirm(
+                    passwordControllerChecker: _passwordControllerChecker),
+                SizedBox(height: 50),
+                RegisterButton(),
+                SizedBox(height: 60),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                          value: _isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isChecked = value ?? false;
+                            });
+                          }),
+                      AgreementText(),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                GoToLoginScreenText(),
+              ],
+            ),
           ),
         ),
       ),
@@ -81,16 +98,16 @@ class GoToLoginScreenText extends StatelessWidget {
             TextSpan(
               text: 'Ja tens un compte? ',
               style: TextStyle(
-                color: Colors.black45,
-                fontSize: 16,
+                color: Colors.white,
+                fontSize: 14,
               ),
             ),
             TextSpan(
               text: 'Fes login',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black45,
-                fontSize: 16,
+                color: Colors.white,
+                fontSize: 14,
               ),
             ),
           ],
@@ -115,7 +132,7 @@ class AgreementText extends StatelessWidget {
               text: 'Estic d\'acord amb el ',
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             TextSpan(
@@ -130,7 +147,7 @@ class AgreementText extends StatelessWidget {
               text: ' de les meves dades',
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
           ],
@@ -157,7 +174,7 @@ class RegisterButton extends StatelessWidget {
       child: Text(
         'Registra\'t',
         style: TextStyle(
-          fontSize: 20.0,
+          fontSize: 18.0,
           color: Colors.white,
         ),
       ),
@@ -166,7 +183,7 @@ class RegisterButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
       ),
     );
   }
@@ -189,13 +206,13 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
         style: TextStyle(color: Colors.black),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         controller: widget._passwordControllerChecker,
         obscureText: true,
         decoration: InputDecoration(
@@ -223,13 +240,13 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
         style: TextStyle(color: Colors.black),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         controller: widget._passwordController,
         obscureText: true,
         decoration: InputDecoration(
@@ -257,13 +274,13 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
         style: TextStyle(color: Colors.black),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         controller: widget._userNameController,
         decoration: InputDecoration(
           hintText: 'Nom d\'usuari',
@@ -284,13 +301,39 @@ class TitolPantalla extends StatelessWidget {
     return Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: const EdgeInsets.only(left: 18.0, top: 50),
+        padding: const EdgeInsets.only(left: 40.0, top: 60),
         child: Text(
           'Registre',
           textAlign: TextAlign.start,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 28,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SubtitolPantalla extends StatelessWidget {
+  const SubtitolPantalla({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: Padding(
+        padding:
+        const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
+        child: Text(
+          'Prepara\'t per ser un autèntic caçatalents!',
+          textAlign: TextAlign.start,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w100,
+            fontSize: 17,
           ),
         ),
       ),

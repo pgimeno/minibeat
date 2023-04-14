@@ -37,7 +37,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   Text(
                     'Hola ',
-                    style: TextStyle(fontSize: 33),
+                    style: TextStyle(fontSize: 33, color: Colors.white),
                   ),
                   UserNameText(),
                 ],
@@ -47,7 +47,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   Icon(Icons.star, color: kMiniBeatMainColor),
                   SizedBox(width: 4),
-                  Text('9999', style: TextStyle(fontSize: 23),),
+                  Text('9999', style: TextStyle(fontSize: 23, color: Colors.white),),
                 ],
               ),
               SizedBox(
@@ -245,7 +245,7 @@ class DisconnectButtonText extends StatelessWidget {
             decoration: TextDecoration.underline,
             decorationThickness: 0.3,
             fontWeight: FontWeight.bold,
-            color: Colors.black45,
+            color: Colors.white,
             fontSize: 15,
           ),
         ),

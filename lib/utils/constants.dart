@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-const kMiniBeatMainColor = Color(0xFF7E8734);
-const kMiniBeatGradientLast = Color(0xFFE1E7D0);
-const kMiniBeatGradientFirst = Color(0xFFFFFFFF);
+const kMiniBeatMainColor = Color(0xFF8D80AD);
+const kMiniBeatGradientFirst = Color(0xFFF02D3A);
+const kMiniBeatGradientLast = Color(0xFF273043);
 
+/*
+const kMiniBeatMainColor = Color(0xFF49A078);
+const kMiniBeatGradientFirst = Color(0xFFF02D3A);
+const kMiniBeatGradientLast = Color(0xFF273043);*/

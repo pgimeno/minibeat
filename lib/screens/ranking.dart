@@ -43,7 +43,7 @@ class _RankingScreenState extends State<RankingScreen> {
                       leading: Image.asset(players[index].avatarImage),
                       title: Text(
                         '#$index',
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Row(
                         children: [
@@ -77,7 +77,7 @@ class _RankingScreenState extends State<RankingScreen> {
                 children: [
                   Text(
                     'La teva posició',
-                    style: TextStyle(color: Colors.black, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   UserTile(),
                 ],
@@ -103,7 +103,7 @@ class _UserTileState extends State<UserTile> {
       leading: Image.asset('images/avatarSample.jpg'),
       title: Text(
         '#5',
-        style: TextStyle(color: Colors.black, fontSize: 19),
+        style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
       ),
       subtitle: Row(
         children: [

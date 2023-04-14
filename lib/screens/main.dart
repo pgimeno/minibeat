@@ -31,6 +31,13 @@ ThemeData createCustomLightTheme() {
       secondary: kMiniBeatMainColor,
       onSecondary: Colors.white,
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: Colors.white),
+      labelStyle: TextStyle(color: Colors.white),
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: kMiniBeatMainColor),
+      ),
+    ),
     appBarTheme: AppBarTheme(
       color: kMiniBeatMainColor,
       iconTheme: IconThemeData(color: Colors.white),
@@ -44,11 +51,11 @@ ThemeData createCustomLightTheme() {
     ),
     textTheme: TextTheme(
       bodyMedium:
-          TextStyle(fontFamily: 'Hind', fontSize: 25, color: Colors.black),
+          TextStyle(fontFamily: 'Hind', fontSize: 25, color: Colors.white),
       bodySmall:
-          TextStyle(fontFamily: 'Hind', fontSize: 17, color: Colors.black),
+          TextStyle(fontFamily: 'Hind', fontSize: 17, color: Colors.white),
       bodyLarge:
-          TextStyle(fontFamily: 'Hind', fontSize: 45, color: Colors.black),
+          TextStyle(fontFamily: 'Hind', fontSize: 45, color: Colors.white),
     ),
   );
 }

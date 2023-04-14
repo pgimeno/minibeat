@@ -176,12 +176,15 @@ class TextMissatgeTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text(
-      checkMessageToShow(),
-      style: TextStyle(color: Colors.black, fontSize: 26),
-      textAlign: TextAlign.center,
-    ));
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, right: 18, left: 18),
+      child: Center(
+          child: Text(
+        checkMessageToShow(),
+        style: TextStyle(color: Colors.white, fontSize: 23),
+        textAlign: TextAlign.center,
+      )),
+    );
   }
 }
 
