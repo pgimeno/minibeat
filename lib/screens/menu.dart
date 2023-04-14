@@ -124,35 +124,6 @@ class _AvatarImageState extends State<AvatarImage> {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        // Do something when button is pressed
-      },
-      child: Text(
-        'Comença a jugar!',
-        style: TextStyle(
-          fontSize: 20.0,
-          color: Colors.white,
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: kMiniBeatMainColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
-      ),
-    );
-  }
-}
-
 class RankingButton extends StatelessWidget {
   const RankingButton({
     super.key,
@@ -170,16 +141,16 @@ class RankingButton extends StatelessWidget {
         child: Text(
           'Ranking',
           style: TextStyle(
-            fontSize: 15.0,
+            fontSize: 16.0,
             color: Colors.white,
           ),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: kMiniBeatMainColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
+            borderRadius: BorderRadius.circular(50.0),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
         ),
       ),
     );
@@ -210,9 +181,9 @@ class StartPlayButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: kMiniBeatMainColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
+            borderRadius: BorderRadius.circular(50.0),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
         ),
       ),
     );

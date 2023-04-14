@@ -52,8 +52,8 @@ class IconImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(18.0),
         child: Image.asset(
           'images/minibeatlogo.JPG',
-          width: 145,
-          height: 145,
+          width: 125,
+          height: 125,
           fit: BoxFit.cover,
         ),
       ),
@@ -109,16 +109,16 @@ class LoginButton extends StatelessWidget {
       child: Text(
         'Inicia sessió',
         style: TextStyle(
-          fontSize: 20.0,
+          fontSize: 18.0,
           color: Colors.white,
         ),
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
       ),
     );
   }
@@ -208,7 +208,7 @@ class SubtitolPantalla extends StatelessWidget {
           style: TextStyle(
             color: Colors.black54,
             fontWeight: FontWeight.w100,
-            fontSize: 24,
+            fontSize: 18,
           ),
         ),
       ),
@@ -232,7 +232,7 @@ class TitolPantalla extends StatelessWidget {
           textAlign: TextAlign.start,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
       ),
