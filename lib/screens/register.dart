@@ -55,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Row(
                     children: [
                       Checkbox(
+                        side: BorderSide(color: Colors.white),
                           value: _isChecked,
                           onChanged: (bool? value) {
                             setState(() {
@@ -144,7 +145,7 @@ class AgreementText extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: ' de les meves dades',
+              text: ' de les meves dades.',
               style: TextStyle(
                 fontSize: 15,
                 color: Colors.white,

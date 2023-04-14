@@ -85,29 +85,17 @@ class RadarBuscant extends StatelessWidget {
         SizedBox(
           height: 100,
         ),
-        Container(
-          padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
-          decoration: BoxDecoration(
-            color: Colors.black26.withAlpha(1),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: kMiniBeatMainColor,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Text(
-                'El radar està funcionant',
-                style: TextStyle(fontSize: 17, color: Colors.white),
-              ),
-              Text(
-                'Buscant!',
-                style: TextStyle(fontSize: 17, color: Colors.white),
-              ),
-            ],
-          ),
+        Column(
+          children: [
+            Text(
+              'El radar està funcionant',
+              style: TextStyle(fontSize: 17, color: Colors.white),
+            ),
+            Text(
+              'Buscant!',
+              style: TextStyle(fontSize: 17, color: Colors.white),
+            ),
+          ],
         ),
       ],
     );
@@ -142,29 +130,17 @@ class BoxInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
-      decoration: BoxDecoration(
-        color: Colors.black26.withAlpha(1),
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: kMiniBeatMainColor,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Text(
-            'S\'obrirà la càmera',
-            style: TextStyle(fontSize: 15, color: Colors.white),
-          ),
-          Text(
-            'Busca el miniBeat al teu voltant',
-            style: TextStyle(fontSize: 15, color: Colors.white),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          'S\'obrirà la càmera',
+          style: TextStyle(fontSize: 15, color: Colors.white),
+        ),
+        Text(
+          'Busca el miniBeat al teu voltant',
+          style: TextStyle(fontSize: 15, color: Colors.white),
+        ),
+      ],
     );
   }
 }

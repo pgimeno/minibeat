@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:minibeat/models/player.dart';
 import 'package:minibeat/utils/constants.dart';
 
+/*
 class RankingScreen extends StatefulWidget {
   @override
   State<RankingScreen> createState() => _RankingScreenState();
 }
 
 class _RankingScreenState extends State<RankingScreen> {
-  List<Player> players = createPlayersTest();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _RankingScreenState extends State<RankingScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 15),
+              SizedBox(height: 45),
               Text(
                 'Ranking',
                 style: TextStyle(fontSize: 24),
@@ -40,7 +40,7 @@ class _RankingScreenState extends State<RankingScreen> {
                     return ListTile(
                       contentPadding:
                           EdgeInsets.only(left: 25, top: 10.0, bottom: 10),
-                      leading: Image.asset(players[index].avatarImage),
+                      leading: Image.asset(players[index].avatarId),
                       title: Text(
                         '#$index',
                         style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -69,15 +69,18 @@ class _RankingScreenState extends State<RankingScreen> {
               SizedBox(height: 5),
               Divider(
                 color: Colors.white,
-                thickness: 3,
+                thickness: 1,
                 indent: 23,
                 endIndent: 23,
               ),
               Column(
                 children: [
-                  Text(
-                    'La teva posició',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(top:15.0),
+                    child: Text(
+                      'La teva posició',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
                   UserTile(),
                 ],
@@ -99,7 +102,7 @@ class _UserTileState extends State<UserTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 25, top: 10.0, bottom: 10),
+      contentPadding: EdgeInsets.only(left: 25, top: 5.0, bottom: 20),
       leading: Image.asset('images/avatarSample.jpg'),
       title: Text(
         '#5',
@@ -126,3 +129,4 @@ class _UserTileState extends State<UserTile> {
     ;
   }
 }
+*/

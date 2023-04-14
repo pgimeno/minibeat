@@ -110,7 +110,7 @@ class _AvatarImageState extends State<AvatarImage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 38.0, bottom: 38.0),
+      padding: const EdgeInsets.only(top: 85.0, bottom: 38.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(38.0),
         child: Image.asset(
@@ -134,10 +134,10 @@ class RankingButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () {/*
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => RankingScreen()));
-        },
+       */ },
         child: Text(
           'Ranking',
           style: TextStyle(

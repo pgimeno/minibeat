@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minibeat/screens/register.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:minibeat/screens/menu.dart';
+import 'package:http/http.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -96,7 +97,7 @@ class GoToRegisterScreenText extends StatelessWidget {
           decorationThickness: 0.3,
           fontWeight: FontWeight.bold,
           color: Colors.white,
-          fontSize: 16,
+          fontSize: 14,
         ),
       ),
     );

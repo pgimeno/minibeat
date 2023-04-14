@@ -1,31 +1,19 @@
-
 class Player {
-  final String avatarImage;
+  final int avatarId;
   final String userName;
-  final String points;
+  final String password;
 
   Player({
-    required this.avatarImage,
+    required this.avatarId,
     required this.userName,
-    required this.points,
+    required this.password,
   });
 
-}
-
-List<Player> createPlayersTest() {
-  String avatarImage = 'images/avatarSample.jpg';
-  List<Player> players = [];
-
-  for (int i = 0; i < 10; i++) {
-    String userName = 'User ${i+1}';
-    String points = '${(i+1)*171}';
-    Player player = Player(
-      avatarImage: avatarImage,
-      userName: userName,
-      points: points,
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      avatarId: json['avatarId'],
+      userName: json['userName'],
+      password: json['password'],
     );
-    players.add(player);
   }
-
-  return players;
 }

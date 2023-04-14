@@ -4,14 +4,35 @@ import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:minibeat/screens/register.dart';
 
+import '../models/player.dart';
+import '../utils/api.dart';
+
+
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+  void getPlayer() async{
+    try {
+      Player? player = await loginUser('fasfasss');
+      if (player != null ) {
+        print('Login successful');
+        // Perform other actions or continue with your application logic
+      } else {
+        print('Login failed: Invalid username or password');
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+    }
+  }
+
   // root
   @override
   Widget build(BuildContext context) {
+    getPlayer();
+
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -20,6 +41,8 @@ class MyApp extends StatelessWidget {
       home: LoginScreen(),
     );
   }
+
+
 }
 
 ThemeData createCustomLightTheme() {
@@ -30,6 +53,14 @@ ThemeData createCustomLightTheme() {
       onPrimary: Colors.white,
       secondary: kMiniBeatMainColor,
       onSecondary: Colors.white,
+    ),
+    checkboxTheme: CheckboxThemeData(
+      shape: CircleBorder(
+        side: BorderSide(
+          color: Colors.white, // Customize the color of the border or outline
+          width: 2.0, // Customize the width of the border or outline
+        ),
+      ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: TextStyle(color: Colors.white),
