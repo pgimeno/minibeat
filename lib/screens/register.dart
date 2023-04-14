@@ -42,14 +42,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 TitolPantalla(),
                 SubtitolPantalla(),
-                SizedBox(height: 40),
+                SizedBox(height: 60),
                 TextFieldUserName(usernameController: _userNameController),
                 TextFieldPassword(passwordController: _passwordController),
                 TextFieldPasswordConfirm(
                     passwordControllerChecker: _passwordControllerChecker),
-                SizedBox(height: 50),
-                RegisterButton(),
                 SizedBox(height: 60),
+                RegisterButton(),
+                SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Row(
@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 60),
                 GoToLoginScreenText(),
               ],
             ),
@@ -218,6 +218,11 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
         decoration: InputDecoration(
           hintText: 'Confirma la contrassenya',
           border: UnderlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 15),
+          prefixIcon: Icon(
+            Icons.lock_rounded,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -252,6 +257,11 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         decoration: InputDecoration(
           hintText: 'Contrassenya',
           border: UnderlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 15),
+          prefixIcon: Icon(
+            Icons.lock_rounded,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -285,6 +295,11 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
         decoration: InputDecoration(
           hintText: 'Nom d\'usuari',
           border: UnderlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 15),
+          prefixIcon: Icon(
+            Icons.account_circle,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -301,7 +316,7 @@ class TitolPantalla extends StatelessWidget {
     return Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: const EdgeInsets.only(left: 40.0, top: 60),
+        padding: const EdgeInsets.only(left: 40.0, top: 100),
         child: Text(
           'Registre',
           textAlign: TextAlign.start,

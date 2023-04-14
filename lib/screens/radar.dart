@@ -89,11 +89,10 @@ class RadarBuscant extends StatelessWidget {
           padding: EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
           decoration: BoxDecoration(
             color: Colors.black26.withAlpha(1),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
                 color: kMiniBeatMainColor,
-                blurRadius: 1,
               ),
             ],
           ),
@@ -151,7 +150,6 @@ class BoxInfo extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: kMiniBeatMainColor,
-            blurRadius: 1,
           ),
         ],
       ),
