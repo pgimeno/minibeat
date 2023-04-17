@@ -42,7 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFieldUserName(userNameController: _userNameController),
                 TextFieldPassword(passwordController: _passwordController),
                 SizedBox(height: 50),
-                LoginButton(),
+                LoginButton(
+                  username: _userNameController.text,
+                  password: _passwordController.text,
+                ),
                 SizedBox(height: 20),
                 GoToRegisterScreenText(),
               ],
@@ -105,9 +108,11 @@ class GoToRegisterScreenText extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({
-    super.key,
-  });
+  const LoginButton(
+      {super.key, required this.username, required this.password});
+
+  final String username;
+  final String password;
 
   @override
   Widget build(BuildContext context) {

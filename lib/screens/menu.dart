@@ -134,10 +134,10 @@ class RankingButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
-        onPressed: () {/*
+        onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => RankingScreen()));
-       */ },
+       },
         child: Text(
           'Ranking',
           style: TextStyle(
