@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/models/playerRanking.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/radar.dart';
+import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -11,7 +13,26 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  String username = "Username";
+
+  PlayerRanking? playerInSession;
+
+  @override
+  void initState() {
+    super.initState();
+    getPlayerLogged();
+  }
+
+  Future<void> getPlayerLogged() async {
+    try {
+      final player = await getPlayer('Pol');
+      setState(() {
+        playerInSession = player;
+      });
+      print(player.toString());
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +52,19 @@ class _MenuScreenState extends State<MenuScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              AvatarImage(),
+              playerInSession != null ? AvatarImage(playerInSession!) : Container(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Hola ',
+                    'Hola, ',
                     style: TextStyle(fontSize: 33, color: Colors.white),
                   ),
-                  UserNameText(),
+                  Text(
+                    playerInSession?.userName ?? '',
+                    style: TextStyle(
+                        fontSize: 33, color: kMiniBeatMainColor, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               Row(
@@ -47,7 +72,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   Icon(Icons.star, color: kMiniBeatMainColor),
                   SizedBox(width: 4),
-                  Text('9999', style: TextStyle(fontSize: 23, color: Colors.white),),
+                  Text(
+                    playerInSession?.totalPoints.toString() ?? '',
+                    style: TextStyle(fontSize: 23, color: Colors.white),
+                  ),
                 ],
               ),
               SizedBox(
@@ -64,49 +92,11 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 }
 
-class UserNameText extends StatefulWidget {
-  @override
-  State<UserNameText> createState() => _UserNameTextState();
-}
+class AvatarImage extends StatelessWidget {
+  final PlayerRanking player;
 
-class _UserNameTextState extends State<UserNameText> {
-  String username = 'Loading...';
+  const AvatarImage(this.player, {Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      username,
-      style: TextStyle(
-          fontSize: 33, color: kMiniBeatMainColor, fontWeight: FontWeight.bold),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserName();
-  }
-
-  void _loadUserName() async {
-    //carregar nom d'usuari de la api
-    String userName =
-        'Usuari'; //await fetchUserName(); // Call your API method to fetch the user name
-    setState(() {
-      username = userName;
-    });
-  }
-}
-
-class AvatarImage extends StatefulWidget {
-  const AvatarImage({
-    super.key,
-  });
-
-  @override
-  State<AvatarImage> createState() => _AvatarImageState();
-}
-
-class _AvatarImageState extends State<AvatarImage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -114,7 +104,7 @@ class _AvatarImageState extends State<AvatarImage> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(38.0),
         child: Image.asset(
-          'images/avatarSample.jpg',
+          'images/avatars/${player.avatarId}.png',
           width: 145,
           height: 145,
           fit: BoxFit.cover,
@@ -135,9 +125,9 @@ class RankingButton extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RankingScreen()));
-       },
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => RankingScreen()));
+        },
         child: Text(
           'Ranking',
           style: TextStyle(
@@ -216,8 +206,8 @@ class DisconnectButtonText extends StatelessWidget {
             TextButton(
               onPressed: () {
                 //Navigator.pop(context, true);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
               child: Text('Si'),
             ),
@@ -238,7 +228,7 @@ class DisconnectButtonText extends StatelessWidget {
         _logout(context);
       },
       child: Padding(
-        padding: const EdgeInsets.only(top:60.0),
+        padding: const EdgeInsets.only(top: 60.0),
         child: Text(
           'Desconectar',
           style: TextStyle(

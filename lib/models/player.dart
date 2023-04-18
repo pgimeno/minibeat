@@ -1,3 +1,4 @@
+//Classe model per fer el Login
 class Player {
   final int avatarId;
   final String userName;

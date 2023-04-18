@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:minibeat/models/player.dart';
 import 'package:minibeat/models/playerRanking.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:minibeat/utils/api.dart';
@@ -79,13 +78,15 @@ class _RankingScreenState extends State<RankingScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(children: [
-                                  Image(
-                                    image:
-
-                                        ///images/avatars/$player.avatarID
-                                        AssetImage('images/avatarSample.jpg'),
-                                    height: 60,
-                                    width: 60,
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image(
+                                      image:
+                                          ///images/avatars/$player.avatarID
+                                          AssetImage('images/avatars/'+snapshot.data![index].avatarId.toString()+'.png'),
+                                      height: 60,
+                                      width: 60,
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 20,
@@ -200,11 +201,7 @@ class UserTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(children: [
-            Image(
-              image: AssetImage('images/avatarSample.jpg'),
-              height: 60,
-              width: 60,
-            ),
+            UserRankingImage(currentPlayer: currentPlayer),
             SizedBox(
               width: 20,
             ),
@@ -231,6 +228,26 @@ class UserTile extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class UserRankingImage extends StatelessWidget {
+  const UserRankingImage({
+    super.key,
+    required this.currentPlayer,
+  });
+
+  final PlayerRanking currentPlayer;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(borderRadius: BorderRadius.circular(50),
+      child: Image(
+        image: AssetImage('images/avatars/'+currentPlayer.avatarId.toString()+'.png'),
+        height: 60,
+        width: 60,
       ),
     );
   }
