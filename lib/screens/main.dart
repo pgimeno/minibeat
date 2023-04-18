@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   void getPlayer() async{
 
     try {
-      print("Get player");
+      print("Get playerr");
       Player? player = await loginUser('fasfasss');
       print("PLAYER: ");
       print(player);
