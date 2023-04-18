@@ -113,7 +113,9 @@ class _HuntActionScreenState extends State<HuntActionScreen> {
                 child: CircularProgressIndicator(),
               ),
               FloatingActionButton(
-                onPressed: _requestPermissions,
+                onPressed:(){
+                  print('Camera button pressed!');
+                },
                 child: Icon(Icons.camera_alt),
               ),
             ],
