@@ -58,7 +58,7 @@ class _RadarScreenState extends State<RadarScreen> {
 
   @override
   void initState() {
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 2), () {
       setState(() {
         isSearching = false;
       });
