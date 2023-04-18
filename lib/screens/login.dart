@@ -5,6 +5,8 @@ import 'package:minibeat/screens/menu.dart';
 import 'package:http/http.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -20,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               kMiniBeatGradientFirst,
@@ -35,19 +37,19 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                IconImage(),
-                TitolPantalla(),
-                SubtitolPantalla(),
-                SizedBox(height: 20),
+                const IconImage(),
+                const TitolPantalla(),
+                const SubtitolPantalla(),
+                const SizedBox(height: 20),
                 TextFieldUserName(userNameController: _userNameController),
                 TextFieldPassword(passwordController: _passwordController),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 LoginButton(
                   username: _userNameController.text,
                   password: _passwordController.text,
                 ),
-                SizedBox(height: 20),
-                GoToRegisterScreenText(),
+                const SizedBox(height: 20),
+                const GoToRegisterScreenText(),
               ],
             ),
           ),
@@ -93,7 +95,7 @@ class GoToRegisterScreenText extends StatelessWidget {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => RegisterScreen()));
       },
-      child: Text(
+      child: const Text(
         'Registra\'t',
         style: TextStyle(
           decoration: TextDecoration.underline,
@@ -124,19 +126,19 @@ class LoginButton extends StatelessWidget {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MenuScreen()));
       },
-      child: Text(
-        'Inicia sessió',
-        style: TextStyle(
-          fontSize: 18.0,
-          color: Colors.white,
-        ),
-      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),
         ),
         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+      ),
+      child: const Text(
+        'Inicia sessió',
+        style: TextStyle(
+          fontSize: 18.0,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -161,14 +163,14 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
       padding:
           const EdgeInsets.only(top: 12.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._passwordController,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           prefixIcon: Icon(
             Icons.lock,
             color: Colors.white,
@@ -201,13 +203,13 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
       padding:
           const EdgeInsets.only(top: 12.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._userNameController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           prefixIcon: Icon(
             Icons.account_circle_rounded,
             color: Colors.white,
@@ -228,11 +230,11 @@ class SubtitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
         padding:
-            const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
+            EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
         child: Text(
           'Què bo veure\'t per aqui',
           textAlign: TextAlign.start,
@@ -254,10 +256,10 @@ class TitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: const EdgeInsets.only(top: 12.0, left: 40, right: 40),
+        padding: EdgeInsets.only(top: 12.0, left: 40, right: 40),
         child: Text(
           'Inicia sessió',
           textAlign: TextAlign.start,
