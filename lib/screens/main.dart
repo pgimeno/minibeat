@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
-import 'package:minibeat/screens/register.dart';
 
 import '../models/player.dart';
 import '../utils/api.dart';
@@ -15,8 +14,12 @@ void main() {
 class MyApp extends StatelessWidget {
 
   void getPlayer() async{
+
     try {
+      print("Get player");
       Player? player = await loginUser('fasfasss');
+      print("PLAYER: ");
+      print(player);
       if (player != null ) {
         print('Login successful');
         // Perform other actions or continue with your application logic
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getPlayer();
-
+    print('Hello');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
