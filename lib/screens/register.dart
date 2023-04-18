@@ -42,6 +42,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           Player playerInsert = Player(avatarId: avatarId, userName: username, password: hashPassword);
 
+          try{
+            Player? playerInserted = await loginUser(playerInsert);
+            if(playerInserted == null){
+              print("No s'ha pogut registrar");
+            }else{
+              print("REGISTRE CORRECTE OLE");
+            }
+          }catch (e) {
+            print('Register ERROOOOR. An error occurred: $e');
+          }
+
         } else {
           //TODO: User already exists. Show Alert.
           print('User already exists');

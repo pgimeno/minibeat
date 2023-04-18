@@ -47,10 +47,10 @@ Future<List<PlayerRanking>?> getRanking() async {
 }
 
 Future<Player?> checkUser(String userName) async {
-  HttpClient httpClient = new HttpClient()
+  HttpClient httpClient = HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
-  IOClient ioClient = new IOClient(httpClient);
+  IOClient ioClient = IOClient(httpClient);
   final response = await ioClient.get(
     Uri.parse('$kUrlApi/getUser/$userName'),
   );
@@ -68,6 +68,23 @@ Future<Player?> checkUser(String userName) async {
   }
 }
 
-Future<Player?> loginUser(String userName, String password) async {
-
+Future<Player> loginUser(Player user) async {
+  final url = Uri.parse('$kUrlApi/newUser/');
+  HttpClient httpClient = HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = IOClient(httpClient);
+  final response = await ioClient.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(user.toJson()),
+  );
+  if (response.statusCode == 201) {
+    return Player.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create user.');
+  }
 }
+

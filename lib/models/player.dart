@@ -16,4 +16,12 @@ class Player {
       password: json['password'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userName': userName,
+      'password': password,
+      'avatarId': avatarId,
+    };
+  }
 }
