@@ -65,6 +65,7 @@ flutter:
 
   assets:
     - images/
+    - images/avatars/
 
   fonts:
     - family: Hind
