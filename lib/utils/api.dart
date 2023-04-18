@@ -68,7 +68,7 @@ Future<Player?> checkUser(String userName) async {
   }
 }
 
-Future<Player> loginUser(Player user) async {
+Future<Player> registerUserApi(Player user) async {
   final url = Uri.parse('$kUrlApi/newUser/');
   HttpClient httpClient = HttpClient()
     ..badCertificateCallback =

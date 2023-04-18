@@ -34,40 +34,116 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try {
         Player? playerExists = await checkUser(username);
         if (playerExists == null ) {
-          print('Following with register');
           int avatarId = Random().nextInt(9) + 1;
           //print(password);
           String hashPassword = HashMaker().hashPassword(password);
-          print(hashPassword);
 
           Player playerInsert = Player(avatarId: avatarId, userName: username, password: hashPassword);
 
           try{
-            Player? playerInserted = await loginUser(playerInsert);
-            if(playerInserted == null){
-              print("No s'ha pogut registrar");
-            }else{
-              print("REGISTRE CORRECTE OLE");
+            Player? playerInserted = await registerUserApi(playerInsert);
+            if(playerInserted != null){
+              showRegisterOkDialog(context);
             }
           }catch (e) {
-            print('Register ERROOOOR. An error occurred: $e');
+            print('Register error: $e');
           }
 
         } else {
-          //TODO: User already exists. Show Alert.
-          print('User already exists');
+          showUserExistsDialog(context);
         }
       } catch (e) {
-        print('Register. An error occurred: $e');
+        print('Register Check User. An error occurred: $e');
       }
-
-      //Try to register user
-      //Give random avatarId 1-9.png
-
-      //If register successful go to login page
     } else {
-      //TODO: Passwords not equal or checkbox is not checked.
+      showPasswordsAndCheckDialog(context);
     }
+  }
+
+  showRegisterOkDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Registre correcte",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Ja pots iniciar sessió i començar a jugar!",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showUserExistsDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "El nom d\'usuari ja existeix",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Prova amb un altre nom d'usuari",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showPasswordsAndCheckDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Les contrasenyes han de coincidir",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Accepta els termes i condicions",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -143,10 +219,8 @@ class GoToLoginScreenText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //amagar teclat quan apretes botó
+        //Amagar teclat quan apretes botó
         FocusManager.instance.primaryFocus?.unfocus();
-        // Open register screen
-        print('tapped!!');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
@@ -262,7 +336,7 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
@@ -270,7 +344,7 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
         controller: widget._passwordControllerChecker,
         obscureText: true,
         decoration: const InputDecoration(
-          hintText: 'Confirma la contrassenya',
+          hintText: 'Confirma la contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
           prefixIcon: Icon(
@@ -301,15 +375,15 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._passwordController,
         obscureText: true,
-        decoration: InputDecoration(
-          hintText: 'Contrassenya',
+        decoration: const InputDecoration(
+          hintText: 'Contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
           prefixIcon: Icon(
@@ -340,13 +414,13 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._userNameController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Nom d\'usuari',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
@@ -367,10 +441,10 @@ class TitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: const EdgeInsets.only(left: 40.0, top: 100),
+        padding: EdgeInsets.only(left: 40.0, top: 100),
         child: Text(
           'Registre',
           textAlign: TextAlign.start,
@@ -391,11 +465,11 @@ class SubtitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
         padding:
-        const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
+        EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
         child: Text(
           'Prepara\'t per ser un autèntic caçatalents!',
           textAlign: TextAlign.start,
