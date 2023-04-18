@@ -46,7 +46,7 @@ Future<List<PlayerRanking>?> getRanking() async {
   }
 }
 
-Future<Player?> loginUser(String userName) async {
+Future<Player?> checkUser(String userName) async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
@@ -66,4 +66,8 @@ Future<Player?> loginUser(String userName) async {
   } else {
     throw Exception('Failed to check user');
   }
+}
+
+Future<Player?> loginUser(String userName, String password) async {
+
 }

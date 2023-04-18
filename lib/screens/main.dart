@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
 
-import '../models/player.dart';
-import '../utils/api.dart';
 
 
 void main() {
@@ -12,11 +10,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
+/*
   void getPlayer() async{
-
     try {
       print("Get playerr");
+
       Player? player = await loginUser('fasfasss');
       print("PLAYER: ");
       print(player);
@@ -30,11 +28,11 @@ class MyApp extends StatelessWidget {
       print('An error occurred: $e');
     }
   }
-
+*/
   // root
   @override
   Widget build(BuildContext context) {
-    getPlayer();
+    //getPlayer();
     print('Hello');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(

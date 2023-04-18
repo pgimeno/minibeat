@@ -1,10 +1,16 @@
+import 'dart:math';
+import 'package:minibeat/utils/hashPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
-import 'package:minibeat/screens/menu.dart';
+
+import '../models/player.dart';
+import '../utils/api.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -14,6 +20,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
+
+
+  Future<void> registerUser() async {
+    final String username = _userNameController.text.trim();
+    final String password = _passwordController.text.trim();
+    final String passwordChecker = _passwordControllerChecker.text.trim();
+    final bool isChecked = _isChecked;
+
+    if (username.isNotEmpty && password.isNotEmpty && password == passwordChecker && isChecked) {
+
+      //Check if user exists - Avisar
+      try {
+        Player? playerExists = await checkUser(username);
+        if (playerExists == null ) {
+          print('Following with register');
+          int avatarId = Random().nextInt(9) + 1;
+          //print(password);
+          String hashPassword = HashMaker().hashPassword(password);
+          print(hashPassword);
+
+          Player playerInsert = Player(avatarId: avatarId, userName: username, password: hashPassword);
+
+        } else {
+          //TODO: User already exists. Show Alert.
+          print('User already exists');
+        }
+      } catch (e) {
+        print('Register. An error occurred: $e');
+      }
+
+      //Try to register user
+      //Give random avatarId 1-9.png
+
+      //If register successful go to login page
+    } else {
+      //TODO: Passwords not equal or checkbox is not checked.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       resizeToAvoidBottomInset: false,
       body: Container(width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               kMiniBeatGradientFirst,
@@ -40,34 +84,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TitolPantalla(),
-                SubtitolPantalla(),
-                SizedBox(height: 60),
+                const TitolPantalla(),
+                const SubtitolPantalla(),
+                const SizedBox(height: 60),
                 TextFieldUserName(usernameController: _userNameController),
                 TextFieldPassword(passwordController: _passwordController),
                 TextFieldPasswordConfirm(
                     passwordControllerChecker: _passwordControllerChecker),
-                SizedBox(height: 60),
-                RegisterButton(),
-                SizedBox(height: 20),
+                const SizedBox(height: 60),
+                RegisterButton(
+                  registerCallback: registerUser
+                ),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Row(
                     children: [
                       Checkbox(
-                        side: BorderSide(color: Colors.white),
+                        side: const BorderSide(color: Colors.white),
                           value: _isChecked,
                           onChanged: (bool? value) {
                             setState(() {
                               _isChecked = value ?? false;
                             });
                           }),
-                      AgreementText(),
+                      const AgreementText(),
                     ],
                   ),
                 ),
-                SizedBox(height: 60),
-                GoToLoginScreenText(),
+                const SizedBox(height: 60),
+                const GoToLoginScreenText(),
               ],
             ),
           ),
@@ -91,10 +137,10 @@ class GoToLoginScreenText extends StatelessWidget {
         // Open register screen
         print('tapped!!');
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
       },
       child: RichText(
-        text: TextSpan(
+        text: const TextSpan(
           children: [
             TextSpan(
               text: 'Ja tens un compte? ',
@@ -127,7 +173,7 @@ class AgreementText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: RichText(
-        text: TextSpan(
+        text: const TextSpan(
           children: [
             TextSpan(
               text: 'Estic d\'acord amb el ',
@@ -159,32 +205,28 @@ class AgreementText extends StatelessWidget {
 }
 
 class RegisterButton extends StatelessWidget {
-  const RegisterButton({
-    super.key,
-  });
+  Function registerCallback;
 
+  RegisterButton({super.key, required this.registerCallback});
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        //amagar teclat quan apretes botó
-        //FocusManager.instance.primaryFocus?.unfocus();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuScreen()));
+          registerCallback();
       },
-      child: Text(
-        'Registra\'t',
-        style: TextStyle(
-          fontSize: 18.0,
-          color: Colors.white,
-        ),
-      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
         padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+      ),
+      child: const Text(
+        'Registra\'t',
+        style: TextStyle(
+          fontSize: 18.0,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -216,7 +258,7 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
         textAlign: TextAlign.left,
         controller: widget._passwordControllerChecker,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Confirma la contrassenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
@@ -356,3 +398,5 @@ class SubtitolPantalla extends StatelessWidget {
     );
   }
 }
+
+
