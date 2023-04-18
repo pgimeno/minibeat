@@ -4,6 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
 import 'dart:async';
 
+import 'hunt_action.dart';
+
 String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
 String missatgeDetectat = 'S\'ha detectat un miniBeat a prop!';
 bool isSearching = true;
@@ -22,9 +24,6 @@ class RadarScreen extends StatefulWidget {
 }
 
 class _RadarScreenState extends State<RadarScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +168,8 @@ class CircleOpenCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('tapped');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HuntActionScreen()));
       },
       child: Stack(
         children: [

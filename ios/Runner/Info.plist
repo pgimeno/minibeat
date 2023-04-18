@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>Aquesta app usa la camera per a capturar els miniBeats</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>permís necessari per a obrir la camera</string>
 </dict>
 </plist>

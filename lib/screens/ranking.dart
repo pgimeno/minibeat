@@ -146,7 +146,10 @@ class _RankingScreenState extends State<RankingScreen> {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
-                        return CircularProgressIndicator();
+                        return Padding(
+                          padding: const EdgeInsets.only( right: 8.0, left: 8.0,top:12.0, bottom: 12.0),
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     },
                   ),
