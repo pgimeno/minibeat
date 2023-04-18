@@ -17,7 +17,8 @@ Future<List<PlayerRanking>?> getRankingFromApi() async {
         currentPlayer = PlayerRanking(
             position: player.position,
             userName: player.userName,
-            totalPoints: player.totalPoints);
+            totalPoints: player.totalPoints,
+            avatarId: player.avatarId);
 
         break;
       }
@@ -73,32 +74,53 @@ class _RankingScreenState extends State<RankingScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
                             contentPadding: EdgeInsets.only(
-                                left: 25, top: 10.0, bottom: 10),
-                            leading: Image.asset('images/avatarSample.jpg'),
-                            title: Text(
-                              '#${snapshot.data![index].position}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Row(
+                                left: 25, top: 10.0, bottom: 10, right: 25),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5.0),
-                                  child: Text(
+                                Row(children: [
+                                  Image(
+                                    image:
+
+                                        ///images/avatars/$player.avatarID
+                                        AssetImage('images/avatarSample.jpg'),
+                                    height: 60,
+                                    width: 60,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '#' +
+                                        snapshot.data![index].position
+                                            .toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
                                     snapshot.data![index].userName,
                                     style: TextStyle(fontSize: 20),
                                   ),
-                                ),
+                                ]),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 50.0),
-                                  child: Icon(Icons.star,
-                                      color: kMiniBeatMainColor),
-                                ),
-                                SizedBox(width: 4),
-                                Text(snapshot.data![index].totalPoints
-                                    .toString()),
+                                  padding: const EdgeInsets.only(right: 18.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.star,
+                                          color: kMiniBeatMainColor),
+                                      SizedBox(width: 4),
+                                      Text(
+                                          snapshot.data![index].totalPoints
+                                              .toString(),
+                                          style: TextStyle(fontSize: 20)),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           );
@@ -135,10 +157,10 @@ class _RankingScreenState extends State<RankingScreen> {
                         for (var player in snapshot.data!) {
                           if (player.userName == 'Pol') {
                             currentPlayer = PlayerRanking(
-                              position: player.position,
-                              userName: player.userName,
-                              totalPoints: player.totalPoints,
-                            );
+                                position: player.position,
+                                userName: player.userName,
+                                totalPoints: player.totalPoints,
+                                avatarId: player.avatarId);
                             break;
                           }
                         }
@@ -147,7 +169,8 @@ class _RankingScreenState extends State<RankingScreen> {
                         return Text('Error: ${snapshot.error}');
                       } else {
                         return Padding(
-                          padding: const EdgeInsets.only( right: 8.0, left: 8.0,top:12.0, bottom: 12.0),
+                          padding: const EdgeInsets.only(
+                              right: 8.0, left: 8.0, top: 12.0, bottom: 12.0),
                           child: CircularProgressIndicator(),
                         );
                       }
@@ -176,14 +199,15 @@ class UserTile extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
           Row(children: [
             Image(
               image: AssetImage('images/avatarSample.jpg'),
               height: 60,
               width: 60,
             ),
-            SizedBox(width: 20,),
+            SizedBox(
+              width: 20,
+            ),
             Text(
               '#' + currentPlayer.position.toString(),
               style: TextStyle(
@@ -191,7 +215,9 @@ class UserTile extends StatelessWidget {
                   fontSize: 19,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(width: 4,),
+            SizedBox(
+              width: 4,
+            ),
             Text(
               currentPlayer.userName,
               style: TextStyle(fontSize: 20),

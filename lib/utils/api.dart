@@ -26,15 +26,14 @@ Future<List<PlayerRanking>?> getRanking() async {
         print('entra al for');
 
         String userName = playerJson['userName'];
-        //int avatarId = playerJson['avatarId'];
         int totalPoints = playerJson['totalPoints'];
-
         int position = playerJson['position'];
+        int avatarId = playerJson['avatarId'];
 
         print('variables assignades');
 
         PlayerRanking player = PlayerRanking(
-            position: position, userName: userName, totalPoints: totalPoints);
+            position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
 
         players.add(player);
       }
