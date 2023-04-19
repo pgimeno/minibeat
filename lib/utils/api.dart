@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/player.dart';
 import 'package:http/io_client.dart';
 
+//Retorna Ranking
 Future<List<PlayerRanking>?> getRanking() async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
@@ -46,6 +47,7 @@ Future<List<PlayerRanking>?> getRanking() async {
   }
 }
 
+//Comprovar si existeix Usuari
 Future<Player?> checkUser(String userName) async {
   HttpClient httpClient = HttpClient()
     ..badCertificateCallback =
@@ -68,6 +70,7 @@ Future<Player?> checkUser(String userName) async {
   }
 }
 
+//Fer registre d'un nou Usuari
 Future<Player> registerUserApi(Player user) async {
   final url = Uri.parse('$kUrlApi/newUser/');
   HttpClient httpClient = HttpClient()
