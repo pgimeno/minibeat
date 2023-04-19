@@ -13,17 +13,31 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  Map<String, dynamic> arguments = {};
   PlayerRanking? playerInSession;
+  String playerName = 'Pol';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      playerName = arguments['userNamePassed'];
+    });
+
+    print("EL NOM PASSAT PER ARGUMENTTTT: "+playerName);
+  }
 
   @override
   void initState() {
     super.initState();
-    getPlayerLogged();
+    getPlayerLogged(playerName);
   }
 
-  Future<void> getPlayerLogged() async {
+  Future<void> getPlayerLogged(String playername) async {
     try {
-      final player = await getPlayer('Pol');
+      final player = await getPlayer(playername);
       setState(() {
         playerInSession = player;
       });

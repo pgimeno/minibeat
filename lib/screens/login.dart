@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (playerExists != null ) {
           String hashPassword = HashMaker().hashPassword(password);
           if(hashPassword == playerExists.password){
-            Navigator.pushNamed(context, '/menu');
+            Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username});
           }else{
             showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
           }
