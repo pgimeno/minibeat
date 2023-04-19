@@ -13,7 +13,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-
   PlayerRanking? playerInSession;
 
   @override
@@ -36,55 +35,92 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              kMiniBeatGradientFirst,
-              kMiniBeatGradientLast,
+    return WillPopScope(
+      onWillPop: () async {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(
+              'Sortir de l\'aplicació.',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            content: Text(
+              'Vols desconnectar-te?',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false),
+                child: Text('Si'),
+              ),
             ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              playerInSession != null ? AvatarImage(playerInSession!) : Container(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Hola, ',
-                    style: TextStyle(fontSize: 33, color: Colors.white),
-                  ),
-                  Text(
-                    playerInSession?.userName ?? '',
-                    style: TextStyle(
-                        fontSize: 33, color: kMiniBeatMainColor, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.star, color: kMiniBeatMainColor),
-                  SizedBox(width: 4),
-                  Text(
-                    playerInSession?.totalPoints.toString() ?? '',
-                    style: TextStyle(fontSize: 23, color: Colors.white),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              StartPlayButton(),
-              RankingButton(),
-              DisconnectButtonText(),
-            ],
+        );
+        return false;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                kMiniBeatGradientFirst,
+                kMiniBeatGradientLast,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                playerInSession != null
+                    ? AvatarImage(playerInSession!)
+                    : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Hola, ',
+                      style: TextStyle(fontSize: 33, color: Colors.white),
+                    ),
+                    Text(
+                      playerInSession?.userName ?? '',
+                      style: TextStyle(
+                          fontSize: 33,
+                          color: kMiniBeatMainColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.star, color: kMiniBeatMainColor),
+                    SizedBox(width: 4),
+                    Text(
+                      playerInSession?.totalPoints.toString() ?? '',
+                      style: TextStyle(fontSize: 23, color: Colors.white),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                StartPlayButton(),
+                RankingButton(),
+                DisconnectButtonText(),
+              ],
+            ),
           ),
         ),
       ),
@@ -206,7 +242,9 @@ class DisconnectButtonText extends StatelessWidget {
             TextButton(
               onPressed: () {
                 //TODO: fer logout aqui
-                Navigator.pushNamed(context, '/login');
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false);
               },
               child: Text('Si'),
             ),

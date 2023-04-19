@@ -33,16 +33,7 @@ class MyApp extends StatelessWidget {
         '/ranking': (context) => RankingScreen(),
         '/radar': (context) => RadarScreen(),
         '/hunt': (context) => HuntActionScreen(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/login') {
-          return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => LoginScreen(),
-            transitionsBuilder: (_, __, ___, child) => child,
-          );
-        }
-        return null;
-      },
+      }
     );
   }
 }
