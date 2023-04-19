@@ -64,8 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushNamed(context, '/login');
       },
     );
     AlertDialog alert = AlertDialog(
@@ -221,8 +220,7 @@ class GoToLoginScreenText extends StatelessWidget {
       onTap: () {
         //Amagar teclat quan apretes botó
         FocusManager.instance.primaryFocus?.unfocus();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushNamed(context, '/login');
       },
       child: RichText(
         text: const TextSpan(

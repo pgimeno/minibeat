@@ -52,9 +52,11 @@ class _HuntActionScreenState extends State<HuntActionScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Permissions Denied'),
+            title: Text('No s\'han donat tots els permissos.'),
             content: Text(
-                'Please allow camera and microphone permissions to use this feature.'),
+              'Siusplau, permet l\'accés a la càmera i al micròfon per poder capturar els miniBeat.',
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -97,23 +99,24 @@ class _HuntActionScreenState extends State<HuntActionScreen> {
                 'Busca el miniBeat pel teu voltant',
                 style: TextStyle(fontSize: 24.0),
               ),
-              _cameraController != null && _cameraController!.value.isInitialized
+              _cameraController != null &&
+                      _cameraController!.value.isInitialized
                   ? Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Stack(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 4 / 5,
-                      child: CameraPreview(_cameraController!),
-                    ),
-                  ],
-                ),
-              )
+                      padding: const EdgeInsets.all(15.0),
+                      child: Stack(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 4 / 5,
+                            child: CameraPreview(_cameraController!),
+                          ),
+                        ],
+                      ),
+                    )
                   : Center(
-                child: CircularProgressIndicator(),
-              ),
+                      child: CircularProgressIndicator(),
+                    ),
               FloatingActionButton(
-                onPressed:(){
+                onPressed: () {
                   print('Camera button pressed!');
                 },
                 child: Icon(Icons.camera_alt),

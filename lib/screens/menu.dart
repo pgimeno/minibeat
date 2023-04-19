@@ -205,9 +205,8 @@ class DisconnectButtonText extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                //Navigator.pop(context, true);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                //TODO: fer logout aqui
+                Navigator.pushNamed(context, '/login');
               },
               child: Text('Si'),
             ),

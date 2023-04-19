@@ -92,8 +92,7 @@ class GoToRegisterScreenText extends StatelessWidget {
       onTap: () {
         // Open register screen
         print('tapped!!');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+        Navigator.pushNamed(context, '/register');
       },
       child: const Text(
         'Registra\'t',
@@ -123,8 +122,7 @@ class LoginButton extends StatelessWidget {
         //amagar teclat quan apretes botó
         FocusManager.instance.primaryFocus?.unfocus();
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuScreen()));
+        Navigator.pushNamed(context, '/menu');
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
