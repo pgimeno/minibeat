@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:minibeat/screens/register.dart';
 import 'package:minibeat/utils/constants.dart';
-import 'package:minibeat/screens/menu.dart';
 import 'package:http/http.dart';
+
+import '../models/player.dart';
+import '../utils/api.dart';
+import '../utils/hashPassword.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +16,90 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> loginUser() async {
+    final String username = _userNameController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (username.isNotEmpty && password.isNotEmpty) {
+      //Check if user exists - Avisar
+      try {
+        Player? playerExists = await checkUser(username);
+        if (playerExists != null ) {
+          String hashPassword = HashMaker().hashPassword(password);
+          if(hashPassword == playerExists.password){
+            Navigator.pushNamed(context, '/menu');
+          }else{
+            showIncorrectLoginInfoDialog(context);
+          }
+        } else {
+          showIncorrectLoginInfoDialog(context);
+        }
+      } catch (e) {
+        print('Login Check User. An error occurred: $e');
+      }
+    } else {
+      showEmptyLoginInfoDialog(context);
+    }
+  }
+
+  showIncorrectLoginInfoDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Informació incorrecte",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Indica un nom d'usuari i contrasenya vàlids",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showEmptyLoginInfoDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Informació incompleta",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Has d'indicar tant nom d'usuari com contrasenya",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFieldPassword(passwordController: _passwordController),
                 const SizedBox(height: 50),
                 LoginButton(
-                  username: _userNameController.text,
-                  password: _passwordController.text,
+                  loginCallback: loginUser,
                 ),
                 const SizedBox(height: 20),
                 const GoToRegisterScreenText(),
@@ -109,20 +194,17 @@ class GoToRegisterScreenText extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton(
-      {super.key, required this.username, required this.password});
-
-  final String username;
-  final String password;
+  Function loginCallback;
+  LoginButton(
+      {super.key, required this.loginCallback});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        //amagar teclat quan apretes botó
+        //Amagar teclat al fer click al botó
         FocusManager.instance.primaryFocus?.unfocus();
-
-        Navigator.pushNamed(context, '/menu');
+        loginCallback();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
