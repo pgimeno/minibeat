@@ -30,20 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
           if(hashPassword == playerExists.password){
             Navigator.pushNamed(context, '/menu');
           }else{
-            showIncorrectLoginInfoDialog(context);
+            showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
           }
         } else {
-          showIncorrectLoginInfoDialog(context);
+          showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
         }
       } catch (e) {
-        print('Login Check User. An error occurred: $e');
+        showMessageDialog(context, 'Error inesperat', 'No s\'ha pogut');
       }
     } else {
-      showEmptyLoginInfoDialog(context);
+      showMessageDialog(context, 'Informació incompleta', 'Has d\'indicar un nom d\'usuari i una contrasenya');
     }
   }
 
-  showIncorrectLoginInfoDialog(BuildContext context) {
+
+  showMessageDialog(BuildContext context, String title, String subtitle) {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
@@ -51,41 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
     AlertDialog alert = AlertDialog(
-      title: const Text(
-        "Informació incorrecte",
+      title: Text(
+        title,
         style: TextStyle(color: Colors.black),
       ),
-      content: const Text(
-        "Indica un nom d'usuari i contrasenya vàlids",
-        style: TextStyle(color: Colors.black),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showEmptyLoginInfoDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        Navigator.pop(context, false);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: const Text(
-        "Informació incompleta",
-        style: TextStyle(color: Colors.black),
-      ),
-      content: const Text(
-        "Has d'indicar tant nom d'usuari com contrasenya",
+      content:  Text(
+        subtitle,
         style: TextStyle(color: Colors.black),
       ),
       actions: [
