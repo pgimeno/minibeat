@@ -64,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        Navigator.pushNamed(context, '/login');
+        Navigator.pushNamed(context, '/login', arguments: {'username': _userNameController.text, 'password': _passwordController.text});
       },
     );
     AlertDialog alert = AlertDialog(

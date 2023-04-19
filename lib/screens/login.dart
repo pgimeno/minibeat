@@ -14,8 +14,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      final String? username = args['username'];
+      final String? password = args['password'];
+
+      _userNameController.text = username!!;
+      _passwordController.text = password!!;
+    }
+  }
 
   Future<void> loginUser() async {
     final String username = _userNameController.text.trim();
