@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:minibeat/utils/hashPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
 
 import '../models/player.dart';
@@ -21,42 +20,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
 
-
   Future<void> registerUser() async {
     final String username = _userNameController.text.trim();
     final String password = _passwordController.text.trim();
     final String passwordChecker = _passwordControllerChecker.text.trim();
     final bool isChecked = _isChecked;
 
-    if (username.isNotEmpty && password.isNotEmpty && password == passwordChecker && isChecked) {
+    if (username.isNotEmpty &&
+        password.isNotEmpty &&
+        passwordChecker.isNotEmpty) {
+      if (password == passwordChecker) {
+        if (isChecked) {
+          //Check if user exists - Avisar
+          try {
+            Player? playerExists = await checkUser(username);
+            if (playerExists == null) {
+              int avatarId = Random().nextInt(20) + 1;
+              String hashPassword = HashMaker().hashPassword(password);
 
-      //Check if user exists - Avisar
-      try {
-        Player? playerExists = await checkUser(username);
-        if (playerExists == null ) {
-          int avatarId = Random().nextInt(9) + 1;
-          //print(password);
-          String hashPassword = HashMaker().hashPassword(password);
+              Player playerInsert = Player(
+                  avatarId: avatarId,
+                  userName: username,
+                  password: hashPassword);
 
-          Player playerInsert = Player(avatarId: avatarId, userName: username, password: hashPassword);
-
-          try{
-            Player? playerInserted = await registerUserApi(playerInsert);
-            if(playerInserted != null){
-              showRegisterOkDialog(context);
+              try {
+                Player? playerInserted = await registerUserApi(playerInsert);
+                if (playerInserted != null) {
+                  showRegisterOkDialog(context);
+                }
+              } catch (e) {
+                showMessageDialog(context, 'Error inesperat',
+                    'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
+              }
+            } else {
+              showMessageDialog(context, 'L\'usuari ja existeix',
+                  'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
             }
-          }catch (e) {
-            print('Register error: $e');
+          } catch (e) {
+            print('Register Check User. An error occurred: $e');
           }
-
         } else {
-          showUserExistsDialog(context);
+          showMessageDialog(context, 'Accepta els termes',
+              'Marca la opció per acceptar els termes i condicions per poder continuar');
         }
-      } catch (e) {
-        print('Register Check User. An error occurred: $e');
+      } else {
+        showMessageDialog(context, 'Contrasenyes incorrectes',
+            'Les contrasenyes han de coincidir');
       }
     } else {
-      showPasswordsAndCheckDialog(context);
+      showMessageDialog(context, 'Dades incomplertes',
+          'Siusplau, emplena totes les dades necesàries pel registre');
     }
   }
 
@@ -64,7 +77,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        Navigator.pushNamed(context, '/login', arguments: {'username': _userNameController.text, 'password': _passwordController.text});
+        Navigator.pushNamed(context, '/login', arguments: {
+          'username': _userNameController.text,
+          'password': _passwordController.text
+        });
       },
     );
     AlertDialog alert = AlertDialog(
@@ -88,35 +104,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
     );
   }
-  showUserExistsDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        Navigator.pop(context, false);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: const Text(
-        "El nom d\'usuari ja existeix",
-        style: TextStyle(color: Colors.black),
-      ),
-      content: const Text(
-        "Prova amb un altre nom d'usuari",
-        style: TextStyle(color: Colors.black),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  showPasswordsAndCheckDialog(BuildContext context) {
+  showMessageDialog(BuildContext context, String title, String subtitle) {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
@@ -124,12 +113,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
     );
     AlertDialog alert = AlertDialog(
-      title: const Text(
-        "Les contrasenyes han de coincidir",
+      title: Text(
+        title,
         style: TextStyle(color: Colors.black),
       ),
-      content: const Text(
-        "Accepta els termes i condicions",
+      content: Text(
+        subtitle,
         style: TextStyle(color: Colors.black),
       ),
       actions: [
@@ -147,13 +136,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return Scaffold(
       //Avoid yellow lines
       resizeToAvoidBottomInset: false,
-      body: Container(width: MediaQuery.of(context).size.width,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -178,16 +167,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFieldPasswordConfirm(
                     passwordControllerChecker: _passwordControllerChecker),
                 const SizedBox(height: 60),
-                RegisterButton(
-                  registerCallback: registerUser
-                ),
+                RegisterButton(registerCallback: registerUser),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Row(
                     children: [
                       Checkbox(
-                        side: const BorderSide(color: Colors.white),
+                          side: const BorderSide(color: Colors.white),
                           value: _isChecked,
                           onChanged: (bool? value) {
                             setState(() {
@@ -291,11 +278,12 @@ class RegisterButton extends StatelessWidget {
   Function registerCallback;
 
   RegisterButton({super.key, required this.registerCallback});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-          registerCallback();
+        registerCallback();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
@@ -334,6 +322,9 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(16),
+        ],
         style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
@@ -373,6 +364,9 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(16),
+        ],
         style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
@@ -412,6 +406,9 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(12),
+        ],
         style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
@@ -466,8 +463,7 @@ class SubtitolPantalla extends StatelessWidget {
     return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding:
-        EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
+        padding: EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
         child: Text(
           'Prepara\'t per ser un autèntic caçatalents!',
           textAlign: TextAlign.start,
@@ -481,5 +477,3 @@ class SubtitolPantalla extends StatelessWidget {
     );
   }
 }
-
-

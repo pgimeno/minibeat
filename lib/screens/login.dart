@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:http/http.dart';
 
@@ -230,6 +231,9 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
       padding:
           const EdgeInsets.only(top: 12.0, bottom: 12, left: 40, right: 40),
       child: TextField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(16),
+        ],
         style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
@@ -270,6 +274,9 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
       padding:
           const EdgeInsets.only(top: 12.0, bottom: 12, left: 40, right: 40),
       child: TextField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(12),
+        ],
         style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
