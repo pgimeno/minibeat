@@ -14,7 +14,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   Map<String, dynamic> arguments = {};
-  PlayerRanking? playerInSession;
+  PlayerRanking? playerInSession = null;
   String playerName = 'Pol';
 
   @override
@@ -25,14 +25,13 @@ class _MenuScreenState extends State<MenuScreen> {
     setState(() {
       playerName = arguments['userNamePassed'];
     });
-
-    print("EL NOM PASSAT PER ARGUMENTTTT: "+playerName);
+    getPlayerLogged(playerName);
   }
 
   @override
   void initState() {
     super.initState();
-    getPlayerLogged(playerName);
+
   }
 
   Future<void> getPlayerLogged(String playername) async {
@@ -118,12 +117,13 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.star, color: kMiniBeatMainColor),
+                    Icon(Icons.star, color: kMiniBeatMainColor, size: 22),
                     SizedBox(width: 4),
                     Text(
                       playerInSession?.totalPoints.toString() ?? '',
-                      style: TextStyle(fontSize: 23, color: Colors.white),
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ],
                 ),
@@ -131,7 +131,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   height: 50,
                 ),
                 StartPlayButton(),
-                RankingButton(),
+                RankingButton(player: playerInSession ?? PlayerRanking.empty()),
                 DisconnectButtonText(),
               ],
             ),
@@ -143,7 +143,7 @@ class _MenuScreenState extends State<MenuScreen> {
 }
 
 class AvatarImage extends StatelessWidget {
-  final PlayerRanking player;
+  final PlayerRanking? player;
 
   const AvatarImage(this.player, {Key? key}) : super(key: key);
 
@@ -154,7 +154,7 @@ class AvatarImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(38.0),
         child: Image.asset(
-          'images/avatars/${player.avatarId}.png',
+          'images/avatars/${player?.avatarId}.png',
           width: 145,
           height: 145,
           fit: BoxFit.cover,
@@ -166,8 +166,10 @@ class AvatarImage extends StatelessWidget {
 
 class RankingButton extends StatelessWidget {
   const RankingButton({
-    super.key,
+    super.key, required this.player
   });
+
+  final PlayerRanking player;
 
   @override
   Widget build(BuildContext context) {
@@ -175,8 +177,7 @@ class RankingButton extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RankingScreen()));
+          Navigator.pushNamed(context,'/ranking', arguments: {'player': player}); //Missing arguments
         },
         child: Text(
           'Ranking',

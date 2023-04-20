@@ -19,6 +19,7 @@ class PlayerRanking {
     required this.avatarId,
   });
 
+
   factory PlayerRanking.fromJson(Map<String, dynamic> json) {
     return PlayerRanking(
       position: json['position'],
