@@ -10,15 +10,13 @@ class HuntActionScreen extends StatefulWidget {
 }
 
 class _HuntActionScreenState extends State<HuntActionScreen> {
-  late CameraController _cameraController;
+  CameraController? _cameraController;
   late List<CameraDescription> _cameras;
-  bool _isCameraPermissionGranted = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
-    _checkCameraPermission();
+    _checkPermissions();
   }
 
   Future<void> _initializeCamera() async {
@@ -27,34 +25,38 @@ class _HuntActionScreenState extends State<HuntActionScreen> {
       _cameras.first,
       ResolutionPreset.medium,
     );
-    await _cameraController.initialize();
+    await _cameraController!.initialize();
     setState(() {});
   }
 
-  Future<void> _checkCameraPermission() async {
-    final status = await Permission.camera.status;
-    if (status.isGranted) {
-      setState(() {
-        _isCameraPermissionGranted = true;
-      });
+  Future<void> _checkPermissions() async {
+    final cameraStatus = await Permission.camera.status;
+    final microphoneStatus = await Permission.microphone.status;
+
+    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+      _initializeCamera();
+    } else {
+      await _requestPermissions();
     }
   }
 
-  Future<void> _requestCameraPermission() async {
-    final status = await Permission.camera.request();
-    if (status.isGranted) {
-      setState(() {
-        _isCameraPermissionGranted = true;
-      });
-    } else if (status.isDenied) {
+  Future<void> _requestPermissions() async {
+    final cameraStatus = await Permission.camera.request();
+    final microphoneStatus = await Permission.microphone.request();
+
+    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+      _initializeCamera();
+    } else {
       // Handle permission denial
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Camera Permission Denied'),
-            content:
-                Text('Please allow camera permission to use this feature.'),
+            title: Text('No s\'han donat tots els permissos.'),
+            content: Text(
+              'Siusplau, permet l\'accés a la càmera i al micròfon per poder capturar els miniBeat.',
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -94,26 +96,29 @@ class _HuntActionScreenState extends State<HuntActionScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                'Sample text 1',
+                'Busca el miniBeat pel teu voltant',
                 style: TextStyle(fontSize: 24.0),
               ),
-              _cameraController.value.isInitialized
+              _cameraController != null &&
+                      _cameraController!.value.isInitialized
                   ? Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Stack(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Stack(
                         children: [
                           AspectRatio(
                             aspectRatio: 4 / 5,
-                            child: CameraPreview(_cameraController),
+                            child: CameraPreview(_cameraController!),
                           ),
                         ],
                       ),
-                  )
+                    )
                   : Center(
                       child: CircularProgressIndicator(),
                     ),
               FloatingActionButton(
-                onPressed: _requestCameraPermission,
+                onPressed: () {
+                  print('Camera button pressed!');
+                },
                 child: Icon(Icons.camera_alt),
               ),
             ],

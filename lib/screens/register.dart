@@ -1,10 +1,15 @@
+import 'dart:math';
+import 'package:minibeat/utils/hashPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/utils/constants.dart';
-import 'package:minibeat/screens/menu.dart';
+
+import '../models/player.dart';
+import '../utils/api.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -14,18 +19,143 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
+  final RegExp regExp = RegExp(r'^[a-zA-Z0-9_]+$');
 
+  Future<void> registerUser() async {
+    final String username = _userNameController.text.trim();
+    final String password = _passwordController.text.trim();
+    final String passwordChecker = _passwordControllerChecker.text.trim();
+    final bool isChecked = _isChecked;
+
+    if (username.isNotEmpty &&
+        password.isNotEmpty &&
+        passwordChecker.isNotEmpty) {
+      if (password == passwordChecker && password.length>8) {
+        if (isChecked) {
+          //Check if user exists - Avisar
+          try {
+            Player? playerExists = await checkUser(username);
+            if (playerExists == null) {
+              int avatarId = Random().nextInt(20) + 1;
+              String hashPassword = HashMaker().hashPassword(password);
+
+              Player playerInsert = Player(
+                  avatarId: avatarId,
+                  userName: username,
+                  password: hashPassword);
+
+              try {
+                Player? playerInserted = await registerUserApi(playerInsert);
+                if (playerInserted != null) {
+                  showRegisterOkDialog(context);
+                }
+              } catch (e) {
+                showMessageDialog(context, 'Error inesperat R01',
+                    'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
+              }
+            } else {
+              showMessageDialog(context, 'L\'usuari ja existeix',
+                  'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
+            }
+          } catch (e) {
+            showMessageDialog(context, 'Error inesperat R02',
+                'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
+          }
+        } else {
+          showMessageDialog(context, 'Accepta els termes',
+              'Marca la opció per acceptar els termes i condicions per poder continuar');
+        }
+      } else {
+        showMessageDialog(context, 'Contrasenyes incorrectes',
+            'Les contrasenyes han de coincidir i han de tenir una mida mínima de 8 caracters.');
+      }
+    } else {
+      showMessageDialog(context, 'Dades incomplertes',
+          'Siusplau, emplena totes les dades necesàries pel registre');
+    }
+  }
+
+  showRegisterOkDialog(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pushNamed(context, '/login', arguments: {
+          'username': _userNameController.text,
+          'password': _passwordController.text
+        });
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Registre correcte",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text(
+        "Ja pots iniciar sessió i començar a jugar!",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showMessageDialog(BuildContext context, String title, String subtitle) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context, false);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.black),
+      ),
+      content: Text(
+        subtitle,
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  String validateInput(String text) {
+    String sanitizedText = '';
+    if (regExp.hasMatch(text)) {
+      sanitizedText = text;
+    } else {
+      showMessageDialog(context, 'Caracters invàlids', 'Només es permeten lletres, números i barra baixa "_"');
+    }
+    return sanitizedText;
+  }
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     return Scaffold(
       //Avoid yellow lines
       resizeToAvoidBottomInset: false,
-      body: Container(width: MediaQuery.of(context).size.width,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               kMiniBeatGradientFirst,
@@ -40,34 +170,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TitolPantalla(),
-                SubtitolPantalla(),
-                SizedBox(height: 60),
+                const TitolPantalla(),
+                const SubtitolPantalla(),
+                const SizedBox(height: 60),
                 TextFieldUserName(usernameController: _userNameController),
                 TextFieldPassword(passwordController: _passwordController),
                 TextFieldPasswordConfirm(
                     passwordControllerChecker: _passwordControllerChecker),
-                SizedBox(height: 60),
-                RegisterButton(),
-                SizedBox(height: 20),
+                const SizedBox(height: 60),
+                RegisterButton(registerCallback: registerUser),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Row(
                     children: [
                       Checkbox(
-                        side: BorderSide(color: Colors.white),
+                          side: const BorderSide(color: Colors.white),
                           value: _isChecked,
                           onChanged: (bool? value) {
                             setState(() {
                               _isChecked = value ?? false;
                             });
                           }),
-                      AgreementText(),
+                      const AgreementText(),
                     ],
                   ),
                 ),
-                SizedBox(height: 60),
-                GoToLoginScreenText(),
+                const SizedBox(height: 60),
+                const GoToLoginScreenText(),
               ],
             ),
           ),
@@ -86,15 +216,12 @@ class GoToLoginScreenText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //amagar teclat quan apretes botó
+        //Amagar teclat quan apretes botó
         FocusManager.instance.primaryFocus?.unfocus();
-        // Open register screen
-        print('tapped!!');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        Navigator.pushNamed(context, '/login');
       },
       child: RichText(
-        text: TextSpan(
+        text: const TextSpan(
           children: [
             TextSpan(
               text: 'Ja tens un compte? ',
@@ -127,7 +254,7 @@ class AgreementText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: RichText(
-        text: TextSpan(
+        text: const TextSpan(
           children: [
             TextSpan(
               text: 'Estic d\'acord amb el ',
@@ -159,32 +286,29 @@ class AgreementText extends StatelessWidget {
 }
 
 class RegisterButton extends StatelessWidget {
-  const RegisterButton({
-    super.key,
-  });
+  Function registerCallback;
+
+  RegisterButton({super.key, required this.registerCallback});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        //amagar teclat quan apretes botó
-        //FocusManager.instance.primaryFocus?.unfocus();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuScreen()));
+        registerCallback();
       },
-      child: Text(
-        'Registra\'t',
-        style: TextStyle(
-          fontSize: 18.0,
-          color: Colors.white,
-        ),
-      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: kMiniBeatMainColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
         padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+      ),
+      child: const Text(
+        'Registra\'t',
+        style: TextStyle(
+          fontSize: 18.0,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -209,15 +333,18 @@ class _TextFieldPasswordConfirmState extends State<TextFieldPasswordConfirm> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(16),
+        ],
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._passwordControllerChecker,
         obscureText: true,
-        decoration: InputDecoration(
-          hintText: 'Confirma la contrassenya',
+        decoration: const InputDecoration(
+          hintText: 'Confirma la contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
           prefixIcon: Icon(
@@ -248,15 +375,18 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(16),
+        ],
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._passwordController,
         obscureText: true,
-        decoration: InputDecoration(
-          hintText: 'Contrassenya',
+        decoration: const InputDecoration(
+          hintText: 'Contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
           prefixIcon: Icon(
@@ -287,13 +417,16 @@ class _TextFieldUserNameState extends State<TextFieldUserName> {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(12),
+        ],
+        style: const TextStyle(color: Colors.white),
         cursorColor: kMiniBeatMainColor,
         cursorWidth: 3,
         maxLines: 1,
         textAlign: TextAlign.left,
         controller: widget._userNameController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Nom d\'usuari',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
@@ -314,10 +447,10 @@ class TitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: const EdgeInsets.only(left: 40.0, top: 100),
+        padding: EdgeInsets.only(left: 40.0, top: 100),
         child: Text(
           'Registre',
           textAlign: TextAlign.start,
@@ -338,11 +471,10 @@ class SubtitolPantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding:
-        const EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
+        padding: EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
         child: Text(
           'Prepara\'t per ser un autèntic caçatalents!',
           textAlign: TextAlign.start,

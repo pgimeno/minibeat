@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/player.dart';
 import 'package:http/io_client.dart';
 
+//Retorna Ranking
 Future<List<PlayerRanking>?> getRanking() async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
@@ -26,15 +27,14 @@ Future<List<PlayerRanking>?> getRanking() async {
         print('entra al for');
 
         String userName = playerJson['userName'];
-        //int avatarId = playerJson['avatarId'];
         int totalPoints = playerJson['totalPoints'];
-
         int position = playerJson['position'];
+        int avatarId = playerJson['avatarId'];
 
         print('variables assignades');
 
         PlayerRanking player = PlayerRanking(
-            position: position, userName: userName, totalPoints: totalPoints);
+            position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
 
         players.add(player);
       }
@@ -47,8 +47,9 @@ Future<List<PlayerRanking>?> getRanking() async {
   }
 }
 
-Future<Player?> loginUser(String userName) async {
-  HttpClient httpClient = new HttpClient()
+//Comprovar si existeix Usuari
+Future<Player?> checkUser(String userName) async {
+  HttpClient httpClient = HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = new IOClient(httpClient);
@@ -68,3 +69,48 @@ Future<Player?> loginUser(String userName) async {
     throw Exception('Failed to check user');
   }
 }
+
+//Fer registre d'un nou Usuari
+Future<Player> registerUserApi(Player user) async {
+  final url = Uri.parse('$kUrlApi/newUser/');
+  HttpClient httpClient = HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = IOClient(httpClient);
+  final response = await ioClient.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(user.toJson()),
+  );
+  if (response.statusCode == 201) {
+    return Player.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create user.');
+  }
+}
+
+//Mètode per omplir el menú principal de jugador
+Future<PlayerRanking?> getPlayer(String playerName) async {
+  HttpClient httpClient = new HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = new IOClient(httpClient);
+  final response = await ioClient.get(
+    Uri.parse('$kUrlApi/getRankingPosition/$playerName'),
+  );
+
+  if (response.statusCode == 200) {
+    List jsonResponse = jsonDecode(response.body);
+
+    if (jsonResponse.isNotEmpty) {
+      return PlayerRanking.fromJson(jsonResponse[0]);
+    } else {
+      return null;
+    }
+  } else {
+    throw Exception('Failed to get user');
+  }
+}
+

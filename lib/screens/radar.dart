@@ -58,7 +58,7 @@ class _RadarScreenState extends State<RadarScreen> {
 
   @override
   void initState() {
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 6), () {
       setState(() {
         isSearching = false;
       });
@@ -168,8 +168,7 @@ class CircleOpenCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HuntActionScreen()));
+        Navigator.pushNamed(context, '/hunt');
       },
       child: Stack(
         children: [

@@ -1,48 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/screens/hunt_action.dart';
 import 'package:minibeat/screens/login.dart';
-import 'package:minibeat/utils/constants.dart';
+import 'package:minibeat/screens/menu.dart';
+import 'package:minibeat/screens/puzzle.dart';
+import 'package:minibeat/screens/radar.dart';
+import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/register.dart';
+import 'package:minibeat/utils/constants.dart';
 
-import '../models/player.dart';
-import '../utils/api.dart';
-
+List<int> llistaPeces = [];
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
-  void getPlayer() async{
-    try {
-      Player? player = await loginUser('fasfasss');
-      if (player != null ) {
-        print('Login successful');
-        // Perform other actions or continue with your application logic
-      } else {
-        print('Login failed: Invalid username or password');
-      }
-    } catch (e) {
-      print('An error occurred: $e');
-    }
-  }
-
   // root
   @override
   Widget build(BuildContext context) {
-    getPlayer();
-
+    //getPlayer();
+    print('Hello');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MiniBeat Go!',
       theme: createCustomLightTheme(),
-      home: LoginScreen(),
+      initialRoute: '/login',
+      //pantalla inicial
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/menu': (context) => MenuScreen(),
+        '/ranking': (context) => RankingScreen(),
+        '/puzzle' :(context) => PuzzleScreen(),
+        '/radar': (context) => RadarScreen(),
+        '/hunt': (context) => HuntActionScreen(),
+      }
     );
   }
-
-
 }
 
 ThemeData createCustomLightTheme() {

@@ -1,3 +1,4 @@
+//Classe model per fer el Login
 class Player {
   final int avatarId;
   final String userName;
@@ -15,5 +16,13 @@ class Player {
       userName: json['userName'],
       password: json['password'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userName': userName,
+      'password': password,
+      'avatarId': avatarId,
+    };
   }
 }
