@@ -31,7 +31,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   Future<void> getPlayerLogged(String playername) async {
@@ -117,7 +116,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(Icons.star, color: kMiniBeatMainColor, size: 22),
                     SizedBox(width: 4),
@@ -131,7 +130,9 @@ class _MenuScreenState extends State<MenuScreen> {
                   height: 50,
                 ),
                 StartPlayButton(),
-                RankingButton(player: playerInSession ?? PlayerRanking.empty()),
+                PuzzleScreenButton(),
+                RankingButton(
+                    player: playerInSession ?? PlayerRanking.empty()),
                 DisconnectButtonText(),
               ],
             ),
@@ -165,9 +166,7 @@ class AvatarImage extends StatelessWidget {
 }
 
 class RankingButton extends StatelessWidget {
-  const RankingButton({
-    super.key, required this.player
-  });
+  const RankingButton({super.key, required this.player});
 
   final PlayerRanking player;
 
@@ -177,7 +176,8 @@ class RankingButton extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context,'/ranking', arguments: {'player': player}); //Missing arguments
+          Navigator.pushNamed(context, '/ranking',
+              arguments: {'player': player}); //Missing arguments
         },
         child: Text(
           'Ranking',
@@ -209,11 +209,42 @@ class StartPlayButton extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RadarScreen()));
+          Navigator.pushNamed(context, '/radar');
         },
         child: Text(
           'Comença a jugar!',
+          style: TextStyle(
+            fontSize: 16.0,
+            color: Colors.white,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kMiniBeatMainColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 20.0),
+        ),
+      ),
+    );
+  }
+}
+
+class PuzzleScreenButton extends StatelessWidget {
+  const PuzzleScreenButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/puzzle');
+        },
+        child: Text(
+          'El meu puzzle',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,

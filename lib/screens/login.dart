@@ -144,7 +144,7 @@ class IconImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(18.0),
         child: Image.asset(
-          'images/miniBeatLogo.PNG',
+          'images/minibeatlogo.png',
           width: 125,
           height: 125,
           fit: BoxFit.cover,
@@ -310,7 +310,7 @@ class SubtitolPantalla extends StatelessWidget {
         padding:
             EdgeInsets.only(top: 5.0, bottom: 12, left: 40, right: 40),
         child: Text(
-          'Què bo veure\'t per aqui',
+          'Què bé veure\'t per aqui',
           textAlign: TextAlign.start,
           style: TextStyle(
             color: Colors.white,
