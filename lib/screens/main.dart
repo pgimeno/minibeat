@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:minibeat/screens/hunt_action.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/menu.dart';
+import 'package:minibeat/screens/puzzle.dart';
 import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/register.dart';
 import 'package:minibeat/utils/constants.dart';
+
+List<int> llistaPeces = [];
 
 void main() {
   runApp(MyApp());
@@ -31,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/menu': (context) => MenuScreen(),
         '/ranking': (context) => RankingScreen(),
+        '/puzzle' :(context) => PuzzleScreen(),
         '/radar': (context) => RadarScreen(),
         '/hunt': (context) => HuntActionScreen(),
       }

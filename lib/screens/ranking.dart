@@ -7,12 +7,15 @@ late Future<List<PlayerRanking>?> players;
 
 PlayerRanking currentPlayer = PlayerRanking.empty();
 
+PlayerRanking playerInSession = PlayerRanking.empty();
+
 Future<List<PlayerRanking>?> getRankingFromApi() async {
+
   try {
     List<PlayerRanking>? ranking = await getRanking();
 
     for (var player in ranking!) {
-      if (player.userName == 'Sandra') {
+      if (player.userName == playerInSession.userName) {
         currentPlayer = PlayerRanking(
             position: player.position,
             userName: player.userName,
@@ -35,9 +38,23 @@ class RankingScreen extends StatefulWidget {
 
 class _RankingScreenState extends State<RankingScreen> {
   @override
+  Map<String, dynamic> arguments = {};
+
+
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     players = getRankingFromApi();
+    arguments =
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      currentPlayer = arguments['player'];
+    });
+
   }
 
   @override
@@ -156,7 +173,7 @@ class _RankingScreenState extends State<RankingScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         for (var player in snapshot.data!) {
-                          if (player.userName == 'Pol') {
+                          if (player.userName == currentPlayer.userName) {
                             currentPlayer = PlayerRanking(
                                 position: player.position,
                                 userName: player.userName,

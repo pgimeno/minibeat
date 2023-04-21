@@ -51,7 +51,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/miniBeatLogo.PNG
+  image: assets/minibeatlogo.png
 
 
 # The following section is specific to Flutter packages.
@@ -66,6 +66,7 @@ flutter:
   assets:
     - images/
     - images/avatars/
+    - images/puzzle/
 
   fonts:
     - family: Hind
