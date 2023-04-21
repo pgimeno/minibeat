@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  final RegExp regExp = RegExp(r'^[a-zA-Z0-9_]+$');
 
   @override
   void didChangeDependencies() {
@@ -39,26 +39,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (username.isNotEmpty && password.isNotEmpty) {
       //Check if user exists - Avisar
-      try {
-        Player? playerExists = await checkUser(username);
-        if (playerExists != null ) {
-          String hashPassword = HashMaker().hashPassword(password);
-          if(hashPassword == playerExists.password){
-            Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username});
-          }else{
+      String sanitizedUsername = validateInput(username);
+      if(sanitizedUsername.isNotEmpty){
+        try {
+          Player? playerExists = await checkUser(username);
+          if (playerExists != null ) {
+            String hashPassword = HashMaker().hashPassword(password);
+            if(hashPassword == playerExists.password){
+              Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username});
+            }else{
+              showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
+            }
+          } else {
             showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
           }
-        } else {
-          showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
+        } catch (e) {
+          showMessageDialog(context, 'Error inesperat', 'No s\'ha pogut');
         }
-      } catch (e) {
-        showMessageDialog(context, 'Error inesperat', 'No s\'ha pogut');
       }
     } else {
       showMessageDialog(context, 'Informació incompleta', 'Has d\'indicar un nom d\'usuari i una contrasenya');
     }
   }
-
 
   showMessageDialog(BuildContext context, String title, String subtitle) {
     Widget okButton = TextButton(
@@ -87,6 +89,16 @@ class _LoginScreenState extends State<LoginScreen> {
         return alert;
       },
     );
+  }
+
+  String validateInput(String text) {
+    String sanitizedText = '';
+    if (regExp.hasMatch(text)) {
+      sanitizedText = text;
+    } else {
+      showMessageDialog(context, 'Caracters invàlids', 'Només es permeten lletres, números i barra baixa "_"');
+    }
+    return sanitizedText;
   }
 
   @override

@@ -19,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
+  final RegExp regExp = RegExp(r'^[a-zA-Z0-9_]+$');
 
   Future<void> registerUser() async {
     final String username = _userNameController.text.trim();
@@ -29,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (username.isNotEmpty &&
         password.isNotEmpty &&
         passwordChecker.isNotEmpty) {
-      if (password == passwordChecker) {
+      if (password == passwordChecker && password.length>8) {
         if (isChecked) {
           //Check if user exists - Avisar
           try {
@@ -49,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   showRegisterOkDialog(context);
                 }
               } catch (e) {
-                showMessageDialog(context, 'Error inesperat',
+                showMessageDialog(context, 'Error inesperat R01',
                     'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
               }
             } else {
@@ -57,7 +58,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
             }
           } catch (e) {
-            print('Register Check User. An error occurred: $e');
+            showMessageDialog(context, 'Error inesperat R02',
+                'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
           }
         } else {
           showMessageDialog(context, 'Accepta els termes',
@@ -65,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       } else {
         showMessageDialog(context, 'Contrasenyes incorrectes',
-            'Les contrasenyes han de coincidir');
+            'Les contrasenyes han de coincidir i han de tenir una mida mínima de 8 caracters.');
       }
     } else {
       showMessageDialog(context, 'Dades incomplertes',
@@ -134,6 +136,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  String validateInput(String text) {
+    String sanitizedText = '';
+    if (regExp.hasMatch(text)) {
+      sanitizedText = text;
+    } else {
+      showMessageDialog(context, 'Caracters invàlids', 'Només es permeten lletres, números i barra baixa "_"');
+    }
+    return sanitizedText;
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
