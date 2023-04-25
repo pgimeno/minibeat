@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:minibeat/utils/hashPassword.dart';
+import 'package:minibeat/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/utils/constants.dart';
@@ -19,7 +19,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _passwordControllerChecker = TextEditingController();
   bool _isChecked = false;
-  final RegExp regExp = RegExp(r'^[a-zA-Z0-9_]+$');
 
   Future<void> registerUser() async {
     final String username = _userNameController.text.trim();
@@ -30,47 +29,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (username.isNotEmpty &&
         password.isNotEmpty &&
         passwordChecker.isNotEmpty) {
-      if (password == passwordChecker && password.length>8) {
+      if (password == passwordChecker && password.length >= 8) {
         if (isChecked) {
-          //Check if user exists - Avisar
-          try {
-            Player? playerExists = await checkUser(username);
-            if (playerExists == null) {
-              int avatarId = Random().nextInt(20) + 1;
-              String hashPassword = HashMaker().hashPassword(password);
+          String sanitizedUsername =
+              Utilities().validateInput(username, context);
+          if (sanitizedUsername.isNotEmpty) {
+            //Check if user exists - Avisar
+            try {
+              Player? playerExists = await checkUser(username);
+              if (playerExists == null) {
+                int avatarId = Random().nextInt(20) + 1;
+                String hashPassword = Utilities().hashPassword(password);
 
-              Player playerInsert = Player(
-                  avatarId: avatarId,
-                  userName: username,
-                  password: hashPassword);
+                Player playerInsert = Player(
+                    avatarId: avatarId,
+                    userName: username,
+                    password: hashPassword);
 
-              try {
-                Player? playerInserted = await registerUserApi(playerInsert);
-                if (playerInserted != null) {
-                  showRegisterOkDialog(context);
+                try {
+                  Player? playerInserted = await registerUserApi(playerInsert);
+                  if (playerInserted != null) {
+                    showRegisterOkDialog(context);
+                  }
+                } catch (e) {
+                  Utilities().showMessageDialog(context, 'Error inesperat R01',
+                      'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
                 }
-              } catch (e) {
-                showMessageDialog(context, 'Error inesperat R01',
-                    'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
+              } else {
+                Utilities().showMessageDialog(context, 'L\'usuari ja existeix',
+                    'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
               }
-            } else {
-              showMessageDialog(context, 'L\'usuari ja existeix',
-                  'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
+            } catch (e) {
+              Utilities().showMessageDialog(context, 'Error inesperat R02',
+                  'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
             }
-          } catch (e) {
-            showMessageDialog(context, 'Error inesperat R02',
-                'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
           }
         } else {
-          showMessageDialog(context, 'Accepta els termes',
+          Utilities().showMessageDialog(context, 'Accepta els termes',
               'Marca la opció per acceptar els termes i condicions per poder continuar');
         }
       } else {
-        showMessageDialog(context, 'Contrasenyes incorrectes',
+        Utilities().showMessageDialog(context, 'Contrasenyes incorrectes',
             'Les contrasenyes han de coincidir i han de tenir una mida mínima de 8 caracters.');
       }
     } else {
-      showMessageDialog(context, 'Dades incomplertes',
+      Utilities().showMessageDialog(context, 'Dades incomplertes',
           'Siusplau, emplena totes les dades necesàries pel registre');
     }
   }
@@ -107,44 +110,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  showMessageDialog(BuildContext context, String title, String subtitle) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        Navigator.pop(context, false);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.black),
-      ),
-      content: Text(
-        subtitle,
-        style: TextStyle(color: Colors.black),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  String validateInput(String text) {
-    String sanitizedText = '';
-    if (regExp.hasMatch(text)) {
-      sanitizedText = text;
-    } else {
-      showMessageDialog(context, 'Caracters invàlids', 'Només es permeten lletres, números i barra baixa "_"');
-    }
-    return sanitizedText;
-  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
