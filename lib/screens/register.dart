@@ -29,36 +29,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (username.isNotEmpty &&
         password.isNotEmpty &&
         passwordChecker.isNotEmpty) {
-      if (password == passwordChecker && password.length>=8) {
+      if (password == passwordChecker && password.length >= 8) {
         if (isChecked) {
-          //Check if user exists - Avisar
-          try {
-            Player? playerExists = await checkUser(username);
-            if (playerExists == null) {
-              int avatarId = Random().nextInt(20) + 1;
-              String hashPassword = Utilities().hashPassword(password);
+          String sanitizedUsername =
+              Utilities().validateInput(username, context);
+          if (sanitizedUsername.isNotEmpty) {
+            //Check if user exists - Avisar
+            try {
+              Player? playerExists = await checkUser(username);
+              if (playerExists == null) {
+                int avatarId = Random().nextInt(20) + 1;
+                String hashPassword = Utilities().hashPassword(password);
 
-              Player playerInsert = Player(
-                  avatarId: avatarId,
-                  userName: username,
-                  password: hashPassword);
+                Player playerInsert = Player(
+                    avatarId: avatarId,
+                    userName: username,
+                    password: hashPassword);
 
-              try {
-                Player? playerInserted = await registerUserApi(playerInsert);
-                if (playerInserted != null) {
-                  showRegisterOkDialog(context);
+                try {
+                  Player? playerInserted = await registerUserApi(playerInsert);
+                  if (playerInserted != null) {
+                    showRegisterOkDialog(context);
+                  }
+                } catch (e) {
+                  Utilities().showMessageDialog(context, 'Error inesperat R01',
+                      'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
                 }
-              } catch (e) {
-                Utilities().showMessageDialog(context, 'Error inesperat R01',
-                    'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
+              } else {
+                Utilities().showMessageDialog(context, 'L\'usuari ja existeix',
+                    'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
               }
-            } else {
-              Utilities().showMessageDialog(context, 'L\'usuari ja existeix',
-                  'El nom d\'usuari indicat ja ha estat escollit, prova amb un altre');
+            } catch (e) {
+              Utilities().showMessageDialog(context, 'Error inesperat R02',
+                  'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
             }
-          } catch (e) {
-            Utilities().showMessageDialog(context, 'Error inesperat R02',
-                'S\'ha produit un error inesperat en el registre, espera uns minuts i torna a intentar\-ho');
           }
         } else {
           Utilities().showMessageDialog(context, 'Accepta els termes',
