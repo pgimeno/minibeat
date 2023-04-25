@@ -1,5 +1,7 @@
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/screens/ar_screen.dart';
 import 'package:minibeat/screens/hunt_action.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/menu.dart';
@@ -11,7 +13,11 @@ import 'package:minibeat/utils/constants.dart';
 
 List<int> llistaPeces = [];
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  print(await ArCoreController.checkArCoreAvailability());
+  print(await ArCoreController.checkIsArCoreInstalled());
+
   runApp(MyApp());
 }
 
@@ -36,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/ranking': (context) => RankingScreen(),
         '/puzzle' :(context) => PuzzleScreen(),
         '/radar': (context) => RadarScreen(),
-        '/hunt': (context) => HuntActionScreen(),
+        '/hunt': (context) => ArScreen(),
       }
     );
   }

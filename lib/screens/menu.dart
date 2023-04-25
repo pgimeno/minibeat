@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/models/player.dart';
 import 'package:minibeat/models/playerRanking.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/ranking.dart';
@@ -15,6 +16,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   Map<String, dynamic> arguments = {};
   PlayerRanking? playerInSession = null;
+  Player? playerLogged = null;
   String playerName = 'Pol';
 
   @override
@@ -24,6 +26,7 @@ class _MenuScreenState extends State<MenuScreen> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
       playerName = arguments['userNamePassed'];
+      playerLogged = arguments['userLogged'];
     });
     getPlayerLogged(playerName);
   }
@@ -129,7 +132,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 SizedBox(
                   height: 50,
                 ),
-                StartPlayButton(),
+                StartPlayButton(playerLogged: playerLogged ?? Player.empty()),
                 PuzzleScreenButton(),
                 RankingButton(
                     player: playerInSession ?? PlayerRanking.empty()),
@@ -199,8 +202,10 @@ class RankingButton extends StatelessWidget {
 }
 
 class StartPlayButton extends StatelessWidget {
+
+  final Player playerLogged;
   const StartPlayButton({
-    super.key,
+    super.key, required this.playerLogged
   });
 
   @override
@@ -209,7 +214,7 @@ class StartPlayButton extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/radar');
+          Navigator.pushNamed(context, '/radar', arguments: {'userLogged': playerLogged});
         },
         child: Text(
           'Comença a jugar!',

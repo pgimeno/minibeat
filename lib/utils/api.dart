@@ -31,18 +31,15 @@ Future<List<PlayerRanking>?> getRanking() async {
         int position = playerJson['position'];
         int avatarId = playerJson['avatarId'];
 
-        print('variables assignades');
-
         PlayerRanking player = PlayerRanking(
             position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
 
         players.add(player);
       }
-      print('retorna full llista');
+
       return players;
     }
   } else {
-    print('retorna empty llista');
     return null;
   }
 }

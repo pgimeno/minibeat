@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
 import 'dart:async';
 
+import '../models/player.dart';
 import 'hunt_action.dart';
 
 String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
@@ -24,6 +25,10 @@ class RadarScreen extends StatefulWidget {
 }
 
 class _RadarScreenState extends State<RadarScreen> {
+
+  Map<String, dynamic> arguments = {};
+  Player? playerLogged = null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +61,7 @@ class _RadarScreenState extends State<RadarScreen> {
     );
   }
 
+
   @override
   void initState() {
     Timer(Duration(seconds: 6), () {
@@ -63,6 +69,18 @@ class _RadarScreenState extends State<RadarScreen> {
         isSearching = false;
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    arguments =
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      playerLogged = arguments['userLogged'];
+    });
+
+    print(playerLogged.toString());
   }
 }
 
@@ -168,7 +186,7 @@ class CircleOpenCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/hunt');
+        Navigator.pushNamed(context, '/hunt'); //, arguments: {'userNamePassed': username}
       },
       child: Stack(
         children: [
