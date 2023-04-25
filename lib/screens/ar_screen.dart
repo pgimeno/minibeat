@@ -54,7 +54,7 @@ class _ArScreenState extends State<ArScreen> {
         );
         final cube = ArCoreCube(
             materials: [material],
-            size: vector.Vector3(1.5, 1.5, 1.5),
+            size: vector.Vector3(1, 1, 1),
         );
         final node = ArCoreNode(
             shape: cube,
