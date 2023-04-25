@@ -41,6 +41,7 @@ dependencies:
   permission_handler: ^10.2.0
   crypto: ^3.0.0
   flutter_native_splash: ^2.2.19
+  arcore_flutter_plugin: ^0.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
     - images/
     - images/avatars/
     - images/puzzle/
+    - assets/
 
   fonts:
     - family: Hind
