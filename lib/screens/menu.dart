@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/models/player.dart';
 import 'package:minibeat/models/playerRanking.dart';
-import 'package:minibeat/screens/login.dart';
-import 'package:minibeat/screens/ranking.dart';
-import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 
 class MenuScreen extends StatefulWidget {
+
+  final Player playerLogged;
+
+  MenuScreen({required this.playerLogged});
+
   @override
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  Map<String, dynamic> arguments = {};
+
   PlayerRanking? playerInSession = null;
-  Player? playerLogged = null;
   String playerName = 'Pol';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
     setState(() {
-      playerName = arguments['userNamePassed'];
-      playerLogged = arguments['userLogged'];
+      playerName = widget.playerLogged.userName;
+      print('EL PLAYER QUE HA ARRIBAT AL MENU: ');
+      print(widget.playerLogged.userName.toString());
     });
     getPlayerLogged(playerName);
   }
@@ -132,7 +133,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 SizedBox(
                   height: 50,
                 ),
-                StartPlayButton(playerLogged: playerLogged ?? Player.empty()),
+                StartPlayButton(playerLogged: widget.playerLogged ?? Player.empty()),
                 PuzzleScreenButton(),
                 RankingButton(
                     player: playerInSession ?? PlayerRanking.empty()),

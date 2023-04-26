@@ -9,6 +9,7 @@ import 'package:minibeat/screens/puzzle.dart';
 import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/register.dart';
+import 'package:minibeat/screens/success.dart';
 import 'package:minibeat/utils/constants.dart';
 
 List<int> llistaPeces = [];
@@ -38,11 +39,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
-        '/menu': (context) => MenuScreen(),
+        //'/menu': (context) => MenuScreen(),
         '/ranking': (context) => RankingScreen(),
         '/puzzle' :(context) => PuzzleScreen(),
         '/radar': (context) => RadarScreen(),
         '/hunt': (context) => ArScreen(),
+        //'/success': (context) => SuccessScreen(),
       }
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/screens/menu.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:http/http.dart';
 
@@ -45,7 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
           if (playerExists != null ) {
             String hashPassword = Utilities().hashPassword(password);
             if(hashPassword == playerExists.password){
-              Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username, 'userLogged': playerExists});
+              //Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username, 'userLogged': playerExists});
+
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuScreen(playerLogged: playerExists)));
+
             }else{
               Utilities().showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
             }

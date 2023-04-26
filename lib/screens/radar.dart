@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:minibeat/models/artifact.dart';
+import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
 import 'dart:async';
-
 import '../models/player.dart';
-import 'hunt_action.dart';
 
-String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
-String missatgeDetectat = 'S\'ha detectat un miniBeat a prop!';
-bool isSearching = true;
+String missatgeInicial =
+    'Mou-te pel recinte i atrapa totes les peçes del puzzle.';
+String missatgeDetectat = 'S\'ha detectat una peça a prop!';
+
+bool isSearching = false;
+
+late Artifact artifactFound;
+Player? playerLogged = null;
 
 String checkMessageToShow() {
   if (isSearching) {
@@ -25,9 +30,26 @@ class RadarScreen extends StatefulWidget {
 }
 
 class _RadarScreenState extends State<RadarScreen> {
-
   Map<String, dynamic> arguments = {};
-  Player? playerLogged = null;
+
+  void checkLocation() {
+    setState(() {
+      isSearching = false;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      playerLogged = arguments['userLogged'];
+    });
+    print('PANTALLA RADAR ACTIVADA, EL player Logged és: ');
+    print(playerLogged!.userName.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,26 +83,9 @@ class _RadarScreenState extends State<RadarScreen> {
     );
   }
 
-
   @override
   void initState() {
-    Timer(Duration(seconds: 6), () {
-      setState(() {
-        isSearching = false;
-      });
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    arguments =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    setState(() {
-      playerLogged = arguments['userLogged'];
-    });
-
-    print(playerLogged.toString());
+    checkLocation();
   }
 }
 
@@ -186,7 +191,16 @@ class CircleOpenCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/hunt'); //, arguments: {'userNamePassed': username}
+        artifactFound = Artifact(
+            Id: 2,
+            ImageNumber: 2,
+            Points: 100,
+            Latitude: 20.20,
+            Longitude: 15.15);
+        Navigator.pushNamed(context, '/hunt', arguments: {
+          'playerLogged': playerLogged,
+          'artifactToShow': artifactFound
+        });
       },
       child: Stack(
         children: [
