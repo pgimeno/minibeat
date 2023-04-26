@@ -25,13 +25,4 @@ class Artifact {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'Id': Id,
-      'ImageNumber' : ImageNumber,
-      'Points' : Points,
-      'Latitude' : Latitude,
-      'Longitude' : Longitude
-    };
-  }
 }
