@@ -23,7 +23,7 @@ class Player {
       avatarId: json['avatarId'],
       userName: json['userName'],
       password: json['password'],
-      id: json['Id'],
+      id: json['id'],
     );
   }
 

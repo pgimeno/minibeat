@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             String hashPassword = Utilities().hashPassword(password);
             if(hashPassword == playerExists.password){
               //Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username, 'userLogged': playerExists});
-
+              print("LOGIN PLAYER EXISTS ${playerExists.id.toString()}");
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuScreen(playerLogged: playerExists)));
 
             }else{

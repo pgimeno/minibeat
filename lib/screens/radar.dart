@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/models/artifact.dart';
-import 'package:minibeat/screens/ranking.dart';
+import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
-import 'dart:async';
 import '../models/player.dart';
+import '../utils/utilities.dart';
 
 String missatgeInicial =
     'Mou-te pel recinte i atrapa totes les peçes del puzzle.';
 String missatgeDetectat = 'S\'ha detectat una peça a prop!';
-
-bool isSearching = false;
-
+bool isSearching = true;
 late Artifact artifactFound;
-Player? playerLogged = null;
+late Player playerLogged;
+List<Artifact>? artifactsAvailable = List.empty(growable: true);
 
 String checkMessageToShow() {
   if (isSearching) {
@@ -32,23 +31,57 @@ class RadarScreen extends StatefulWidget {
 class _RadarScreenState extends State<RadarScreen> {
   Map<String, dynamic> arguments = {};
 
-  void checkLocation() {
-    setState(() {
-      isSearching = false;
-    });
+  @override
+  void initState() {
+    _checkLocation();
+  }
+
+  //Agafar la llista d'Artifacts disponibles per aquest usuari en aquest moment.
+  getCurrentAvailableArtifacts() async{
+    int? playerId = playerLogged.id;
+    print('PLAYERID: $playerId');
+    if (playerId != null) {
+      artifactsAvailable = await getAvailableArtifacts(playerId);
+    }
+
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
+    setState(() {
+      isSearching = true;
+    });
+    //Take arguments
     arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
       playerLogged = arguments['userLogged'];
+      print('ARGUMENTS PLAYERLOGGED: ${playerLogged.id.toString()}');
     });
-    print('PANTALLA RADAR ACTIVADA, EL player Logged és: ');
-    print(playerLogged!.userName.toString());
+
+    //Take list
+    getCurrentAvailableArtifacts();
+    print(artifactsAvailable.toString());
+
+
+  }
+
+  void _checkLocation() {
+    // Check user location and update isSearching variable
+    // For example, if user is within a certain radius of a location:
+    for (Artifact ar in artifactsAvailable!) {
+        double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, 41.6021011, 2.2842591);
+        if (distanceInM<=distanceToSearch){
+          print("ESTIC A MENYS DE DOS METRES");
+          setState(() {
+            isSearching = false;
+          });
+        }
+    }
+
+
+
   }
 
   @override
@@ -83,10 +116,7 @@ class _RadarScreenState extends State<RadarScreen> {
     );
   }
 
-  @override
-  void initState() {
-    checkLocation();
-  }
+
 }
 
 class RadarBuscant extends StatelessWidget {

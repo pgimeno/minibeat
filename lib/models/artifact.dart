@@ -16,11 +16,11 @@ class Artifact {
 
   factory Artifact.fromJson(Map<String, dynamic> json) {
     return Artifact(
-      Id: json['Id'],
-      ImageNumber: json['ImageNumber'],
-      Points: json['Points'],
-      Latitude: json['Latitude'],
-      Longitude: json['Longitude']
+      Id: json['id'],
+      ImageNumber: json['imageNumber'],
+      Points: json['points'],
+      Latitude: json['latitude'],
+      Longitude: json['longitude']
 
     );
   }

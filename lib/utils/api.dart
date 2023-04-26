@@ -123,19 +123,15 @@ Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
 
   if (response.statusCode == 200) {
     List jsonResponse = jsonDecode(response.body);
-
-    print(jsonResponse.toString());
     List<Artifact> artifacts = List<Artifact>.empty(growable: true);
 
     if (jsonResponse.isNotEmpty) {
       for (var artifactJson in jsonResponse) {
-        print('Artifacts (entra al for)');
-
-        int arId = artifactJson['Id'];
-        int arImgNumber = artifactJson['ImageNumber'];
-        int arPoints = artifactJson['Points'];
-        double arLat = artifactJson['Latitude'];
-        double arLong = artifactJson['Longitude'];
+        int arId = artifactJson['id'];
+        int arImgNumber = artifactJson['imageNumber'];
+        int arPoints = artifactJson['points'];
+        double arLat = artifactJson['latitude'];
+        double arLong = artifactJson['longitude'];
 
         Artifact ar = Artifact(Id: arId, ImageNumber: arImgNumber, Points: arPoints, Latitude: arLat, Longitude: arLong);
 
