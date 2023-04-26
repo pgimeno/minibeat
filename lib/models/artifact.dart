@@ -25,9 +25,4 @@ class Artifact {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'Id': Id,
-    };
-  }
 }

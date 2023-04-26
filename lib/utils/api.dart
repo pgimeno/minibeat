@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:minibeat/models/artifact.dart';
 import 'package:minibeat/models/playerRanking.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -111,3 +112,39 @@ Future<PlayerRanking?> getPlayer(String playerName) async {
   }
 }
 
+Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
+  HttpClient httpClient = new HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = new IOClient(httpClient);
+  final response = await ioClient.get(
+    Uri.parse('$kUrlApi/getAvailableArtifacts/$userId'),
+  );
+
+  if (response.statusCode == 200) {
+    List jsonResponse = jsonDecode(response.body);
+
+    print(jsonResponse.toString());
+    List<Artifact> artifacts = List<Artifact>.empty(growable: true);
+
+    if (jsonResponse.isNotEmpty) {
+      for (var artifactJson in jsonResponse) {
+        print('Artifacts (entra al for)');
+
+        int arId = artifactJson['Id'];
+        int arImgNumber = artifactJson['ImageNumber'];
+        int arPoints = artifactJson['Points'];
+        double arLat = artifactJson['Latitude'];
+        double arLong = artifactJson['Longitude'];
+
+        Artifact ar = Artifact(Id: arId, ImageNumber: arImgNumber, Points: arPoints, Latitude: arLat, Longitude: arLong);
+
+        artifacts.add(ar);
+      }
+
+      return artifacts;
+    }
+  } else {
+    return null;
+  }
+}
