@@ -27,6 +27,7 @@ class _ArScreenState extends State<ArScreen> {
             home: Scaffold(
                 body: ArCoreView(
                     onArCoreViewCreated: _onArCoreViewCreated,
+                    enableTapRecognizer: true,
                 ),
             ),
         );
@@ -36,6 +37,10 @@ class _ArScreenState extends State<ArScreen> {
         arCoreController = controller;
 
         _addCube(arCoreController);
+
+        arCoreController.onNodeTap = (node){
+          print('User tapped!!!!');
+        };
     }
 
     Future<void> _addCube(ArCoreController controller) async {
@@ -49,12 +54,12 @@ class _ArScreenState extends State<ArScreen> {
         final bytes = (await rootBundle.load('images/puzzle/1.jpg')).buffer.asUint8List();
         final material = ArCoreMaterial(
             color: Colors.black,
-            textureBytes: bytes, // the bytes of your texture image
+            textureBytes: bytes,
             metallic: 1.0,
         );
         final cube = ArCoreCube(
             materials: [material],
-            size: vector.Vector3(1.5, 1.5, 1.5),
+            size: vector.Vector3(1, 1, 1),
         );
         final node = ArCoreNode(
             shape: cube,
@@ -69,4 +74,5 @@ class _ArScreenState extends State<ArScreen> {
         arCoreController.dispose();
         super.dispose();
     }
+
 }
