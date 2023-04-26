@@ -1,11 +1,18 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:minibeat/models/artifact.dart';
+import 'package:minibeat/models/point.dart';
 import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
 import '../models/player.dart';
 import '../utils/utilities.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 String missatgeInicial =
     'Mou-te pel recinte i atrapa totes les peçes del puzzle.';
@@ -30,10 +37,12 @@ class RadarScreen extends StatefulWidget {
 
 class _RadarScreenState extends State<RadarScreen> {
   Map<String, dynamic> arguments = {};
+  late PointGeo _currentPosition = PointGeo(0.0, 0.0);
+  late StreamSubscription<Position> _positionStreamSubscription;
 
   @override
   void initState() {
-    _checkLocation();
+    _checkLocationPermission();
   }
 
   //Agafar la llista d'Artifacts disponibles per aquest usuari en aquest moment.
@@ -71,19 +80,58 @@ class _RadarScreenState extends State<RadarScreen> {
     // Check user location and update isSearching variable
     // For example, if user is within a certain radius of a location:
     for (Artifact ar in artifactsAvailable!) {
-        double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, 41.6021011, 2.2842591);
+        print("LATITUDE ACTUAL ${_currentPosition.latitude}");
+        double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, _currentPosition.latitude, _currentPosition.longitude);
         if (distanceInM<=distanceToSearch){
           print("ESTIC A MENYS DE DOS METRES");
+          Vibration.vibrate(duration: 2000);
           setState(() {
             isSearching = false;
           });
         }
     }
-
-
-
   }
 
+
+  Future<void> _checkLocationPermission() async {
+    if (await Permission.location
+        .request()
+        .isGranted) {
+      _positionStreamSubscription =
+          Geolocator.getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.bestForNavigation)).listen((Position position) {
+            setState(() {
+              _currentPosition = PointGeo(position.latitude, position.longitude);
+              _checkLocation();
+              print(_currentPosition.latitude.toString());
+            });
+          });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Location Permission Required'),
+            content: Text('Please grant permission to access your location.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _positionStreamSubscription.cancel();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,7 +209,6 @@ class RadarHasFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Vibration.vibrate(duration: 2000);
 
     return Column(
       children: [

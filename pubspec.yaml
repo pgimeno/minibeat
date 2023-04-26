@@ -42,6 +42,7 @@ dependencies:
   crypto: ^3.0.0
   flutter_native_splash: ^2.2.19
   arcore_flutter_plugin: ^0.1.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:
