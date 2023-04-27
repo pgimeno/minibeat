@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         '/ranking': (context) => RankingScreen(),
         '/puzzle' :(context) => PuzzleScreen(),
         '/radar': (context) => RadarScreen(),
-        '/hunt': (context) => ArScreen(),
+        //'/hunt': (context) => ArScreen(),
         //'/success': (context) => SuccessScreen(),
       }
     );

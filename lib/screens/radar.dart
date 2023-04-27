@@ -13,6 +13,8 @@ import '../utils/utilities.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'ar_screen.dart';
+
 
 String missatgeInicial =
     'Mou-te pel recinte i atrapa totes les peçes del puzzle.';
@@ -21,6 +23,7 @@ bool isSearching = true;
 late Artifact artifactFound;
 late Player playerLogged;
 List<Artifact>? artifactsAvailable = List.empty(growable: true);
+late StreamSubscription<Position> _positionStreamSubscription;
 
 String checkMessageToShow() {
   if (isSearching) {
@@ -38,7 +41,6 @@ class RadarScreen extends StatefulWidget {
 class _RadarScreenState extends State<RadarScreen> {
   Map<String, dynamic> arguments = {};
   late PointGeo _currentPosition = PointGeo(0.0, 0.0);
-  late StreamSubscription<Position> _positionStreamSubscription;
 
   @override
   void initState() {
@@ -270,10 +272,21 @@ class CircleOpenCamera extends StatelessWidget {
     return GestureDetector(
       onTap: () {
 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ArScreen(playerLogged: playerLogged, artifactToShow: artifactFound,),
+          ),
+        ).then((_) {
+          _positionStreamSubscription.cancel();
+        });
+        /*
         Navigator.pushNamed(context, '/hunt', arguments: {
           'playerLogged': playerLogged,
           'artifactToShow': artifactFound
         });
+
+         */
       },
       child: Stack(
         children: [

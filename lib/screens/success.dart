@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/models/artifact.dart';
+import 'package:minibeat/screens/radar.dart';
 
 import '../models/player.dart';
 import '../utils/constants.dart';
@@ -52,21 +53,12 @@ class _SuccessScreenState extends State<SuccessScreen> {
 
   @override
   void didChangeDependencies() {
-/*
-    Artifact artifactToShow;
-    arguments =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-
-    setState(() {
-      artifactToShow = arguments['artifactHunted'];
-      print('Artifact ID: ' +
-          artifactToShow.Id.toString() +
-          'Artifact Points: ' +
-          artifactToShow.Points.toString());
-    });*/
+    print("USERID: ${playerLogged.id} ARTIFACTID: ${artifactFound.Id}  IMG: ${artifactFound.ImageNumber}");
 
   }
 
   @override
-  void initState() {}
+  void initState() {
+    print("USERID: ${playerLogged.id} ARTIFACTID: ${artifactFound.Id}  IMG: ${artifactFound.ImageNumber}");
+  }
 }
