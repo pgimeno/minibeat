@@ -86,6 +86,7 @@ class _RadarScreenState extends State<RadarScreen> {
           print("ESTIC A MENYS DE DOS METRES");
           Vibration.vibrate(duration: 2000);
           setState(() {
+            artifactFound = ar;
             isSearching = false;
           });
         }
@@ -268,12 +269,7 @@ class CircleOpenCamera extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        artifactFound = Artifact(
-            Id: 2,
-            ImageNumber: 2,
-            Points: 100,
-            Latitude: 20.20,
-            Longitude: 15.15);
+
         Navigator.pushNamed(context, '/hunt', arguments: {
           'playerLogged': playerLogged,
           'artifactToShow': artifactFound
