@@ -134,7 +134,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   height: 50,
                 ),
                 StartPlayButton(playerLogged: widget.playerLogged ?? Player.empty()),
-                PuzzleScreenButton(),
+                PuzzleScreenButton(playerLogged: widget.playerLogged ?? Player.empty()),
                 RankingButton(
                     player: playerInSession ?? PlayerRanking.empty()),
                 DisconnectButtonText(),
@@ -237,8 +237,9 @@ class StartPlayButton extends StatelessWidget {
 }
 
 class PuzzleScreenButton extends StatelessWidget {
+  final Player playerLogged;
   const PuzzleScreenButton({
-    super.key,
+    super.key, required this.playerLogged
   });
 
   @override
@@ -247,7 +248,7 @@ class PuzzleScreenButton extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/puzzle');
+          Navigator.pushNamed(context, '/puzzle', arguments: {'userLogged': playerLogged});
         },
         child: Text(
           'El meu puzzle',

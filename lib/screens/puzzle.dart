@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:minibeat/utils/api.dart';
 
+import '../models/player.dart';
 import '../utils/constants.dart';
+Player currentPlayer = Player.empty();
+List<int>? imgToShow = List<int>.empty(growable: true);
 
 class PuzzleScreen extends StatefulWidget {
   const PuzzleScreen({Key? key}) : super(key: key);
@@ -12,16 +16,24 @@ class PuzzleScreen extends StatefulWidget {
 }
 
 class _PuzzleScreenState extends State<PuzzleScreen> {
+  Map<String, dynamic> arguments = {};
   List<bool> _updatedIndexes = List.generate(16, (_) => false);
   double progres = 0.00;
   int pecesLeft = 16;
 
-  void updatePuzzle(List<int> indexes) {
-    setState(() {
-      _updatedIndexes = List.generate(16, (index) => indexes.contains(index));
-    });
+  @override
+  void initState() {
 
-    updatePercentatgeProgres(indexes);
+  }
+
+  void updatePuzzle(List<int> indexes) {
+    if (indexes.length > 0){
+      setState(() {
+        _updatedIndexes = List.generate(16, (index) => indexes.contains(index));
+      });
+
+      updatePercentatgeProgres(indexes);
+    }
   }
 
   void updatePercentatgeProgres(List<int> llistaDesbloquejades) {
@@ -33,14 +45,33 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
 
   @override
   void didChangeDependencies() {
-    //fer crida a la api de peçes disponibles per desbloquejar i tornar llista
+    super.didChangeDependencies();
+    arguments =
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      currentPlayer = arguments['userLogged'];
+      getImgToShow();
+    });
 
-    // i fer updatePuzzle(llistaRebudaPerApi);
-
-    //updatePuzzle([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
-    updatePuzzle([2,3,4,5,7,8,9,10,11,12,15]);
   }
 
+  getImgToShow() async {
+    int? playerId = currentPlayer.id;
+    print('PLAYER ID: ${currentPlayer.id.toString()}');
+    if (playerId != null) {
+      List<int>? img  = await getHuntedArtifacts(playerId);
+      setState(() {
+        imgToShow = img;
+        print('IMATGES: ${imgToShow.toString()}');
+      });
+      //Fer update de la llista de peçes
+      if(imgToShow == null){
+        updatePuzzle(List<int>.empty());
+      }else{
+        updatePuzzle(imgToShow!);
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
