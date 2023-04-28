@@ -184,3 +184,29 @@ Future<List<PlayerRanking>?> getWinners() async {
     return null;
   }
 }
+
+
+Future<List<int>?> getHuntedArtifacts(int userId) async {
+  HttpClient httpClient = new HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = new IOClient(httpClient);
+  final response = await ioClient.get(
+    Uri.parse('$kUrlApi/getHuntedArtifacts/$userId'),
+  );
+
+  if (response.statusCode == 200) {
+    List jsonResponse = jsonDecode(response.body);
+    List<int> listImg = List<int>.empty(growable: true);
+
+    if (jsonResponse.isNotEmpty) {
+      for (var num in jsonResponse) {
+        listImg.add(num);
+      }
+
+      return listImg;
+    }
+  } else {
+    return null;
+  }
+}

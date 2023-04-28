@@ -16,6 +16,11 @@ import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart'
         ArCoreViewType;
 
 class ArScreen extends StatefulWidget {
+  final Player playerLogged;
+  final Artifact artifactToShow;
+
+  ArScreen({required this.playerLogged, required this.artifactToShow});
+
   @override
   _ArScreenState createState() => _ArScreenState();
 }
@@ -23,15 +28,16 @@ class ArScreen extends StatefulWidget {
 class _ArScreenState extends State<ArScreen> {
   Map<String, dynamic> arguments = {};
   late ArCoreController arCoreController;
-  late Artifact artifactToShow;
-  late Player playerLogged;
+
 
   @override
   void didChangeDependencies() {
+    /*
     arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     artifactToShow = arguments['artifactToShow'];
     playerLogged = arguments['playerLogged'];
+     */
   }
 
   @override
@@ -52,11 +58,11 @@ class _ArScreenState extends State<ArScreen> {
 
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
-    _addCube(arCoreController, artifactToShow.ImageNumber);
+    _addCube(arCoreController, widget.artifactToShow.ImageNumber);
 
     arCoreController.onNodeTap = (node) {
       print('User tapped!!!!');
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SuccessScreen(artifactToShow: artifactToShow, playerLogged: playerLogged,)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SuccessScreen(artifactToShow: widget.artifactToShow, playerLogged: widget.playerLogged,)));
       /*Navigator.pushNamed(context, '/success',
           arguments: {'artifactHunted': artifactToShow});*/
     };

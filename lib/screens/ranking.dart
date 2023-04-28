@@ -60,10 +60,8 @@ class RankingScreen extends StatefulWidget {
 }
 
 class _RankingScreenState extends State<RankingScreen> {
-  @override
   Map<String, dynamic> arguments = {};
-
-
+  @override
   void initState() {
     super.initState();
   }

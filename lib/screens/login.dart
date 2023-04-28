@@ -222,7 +222,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
             Icons.lock,
             color: Colors.white,
           ),
-          hintText: 'Contrassenya',
+          hintText: 'Contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
         ),
