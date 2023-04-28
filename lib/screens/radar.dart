@@ -84,10 +84,10 @@ class _RadarScreenState extends State<RadarScreen> {
         double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, _currentPosition.latitude, _currentPosition.longitude);
         if (distanceInM<=distanceToSearch){
           print("ESTIC A MENYS DE DOS METRES");
-          Vibration.vibrate(duration: 2000);
           setState(() {
             artifactFound = ar;
             isSearching = false;
+
           });
         }
     }
@@ -267,6 +267,7 @@ class CircleOpenCamera extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
 

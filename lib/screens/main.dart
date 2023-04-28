@@ -2,7 +2,6 @@ import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/screens/ar_screen.dart';
-import 'package:minibeat/screens/hunt_action.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/menu.dart';
 import 'package:minibeat/screens/puzzle.dart';

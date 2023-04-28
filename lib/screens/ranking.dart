@@ -4,13 +4,13 @@ import 'package:minibeat/utils/constants.dart';
 import 'package:minibeat/utils/api.dart';
 
 late Future<List<PlayerRanking>?> players;
+late Future<List<PlayerRanking>?> winners;
 
 PlayerRanking currentPlayer = PlayerRanking.empty();
 
 PlayerRanking playerInSession = PlayerRanking.empty();
 
 Future<List<PlayerRanking>?> getRankingFromApi() async {
-
   try {
     List<PlayerRanking>? ranking = await getRanking();
 
@@ -31,6 +31,29 @@ Future<List<PlayerRanking>?> getRankingFromApi() async {
   }
 }
 
+Future<List<PlayerRanking>?> getWinnersFromApi() async {
+
+  try {
+    List<PlayerRanking>? winners = await getWinners();
+    if (winners != null && winners.isNotEmpty) {
+      print('Winners:');
+      for (PlayerRanking player in winners) {
+        print('  Position: ${player.position}');
+        print('  Username: ${player.userName}');
+        print('  Total points: ${player.totalPoints}');
+        print('  Avatar ID: ${player.avatarId}');
+      }
+    } else {
+      print('No winners found.');
+    }
+
+    return winners;
+  } catch (e) {
+    print(e.toString());
+  }
+
+}
+
 class RankingScreen extends StatefulWidget {
   @override
   State<RankingScreen> createState() => _RankingScreenState();
@@ -49,6 +72,8 @@ class _RankingScreenState extends State<RankingScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     players = getRankingFromApi();
+    winners = getWinnersFromApi();
+
     arguments =
     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
@@ -74,7 +99,48 @@ class _RankingScreenState extends State<RankingScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 45),
+              SizedBox(height: 35),
+              Text(
+                'Guanyador',
+                style: TextStyle(fontSize: 24),
+              ),
+              SizedBox(height: 5,),
+              FutureBuilder<List<PlayerRanking>?>(
+                future: winners,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    PlayerRanking firstWinner = snapshot.data![0];
+                    return Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image(
+                            image: AssetImage('images/avatars/${firstWinner.avatarId}.png'),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                        Text(firstWinner.userName, style: TextStyle(fontSize: 20)),
+                        Text('Ha sigut la primera en acabar el puzzle!',  style: TextStyle(fontSize: 17)),
+
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('s\'ha produït un error :(');
+                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Text('Sigues la primera en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+
+              // Llista guanyadors
+
+              SizedBox(height:25),
               Text(
                 'Ranking',
                 style: TextStyle(fontSize: 24),
@@ -145,7 +211,7 @@ class _RankingScreenState extends State<RankingScreen> {
                         },
                       );
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                      return Text('s\'ha produït un error :(');
                     } else {
                       return Center(child: CircularProgressIndicator());
                     }
@@ -241,7 +307,7 @@ class UserTile extends StatelessWidget {
             children: [
               Icon(Icons.star, color: kMiniBeatMainColor),
               SizedBox(width: 4),
-              Text(currentPlayer.totalPoints.toString()),
+              Text(currentPlayer.totalPoints.toString(), style: TextStyle(fontSize: 20),),
             ],
           )
         ],

@@ -144,3 +144,43 @@ Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
     return null;
   }
 }
+
+//Retorna guanyadors
+
+Future<List<PlayerRanking>?> getWinners() async {
+  HttpClient httpClient = new HttpClient()
+    ..badCertificateCallback =
+    ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = new IOClient(httpClient);
+  final response = await ioClient.get(
+    Uri.parse('$kUrlApi/getWinners?limit=1'),
+  );
+
+  if (response.statusCode == 200) {
+    List jsonResponse = jsonDecode(response.body);
+    List<PlayerRanking> players = List<PlayerRanking>.empty(growable: true);
+
+    if (jsonResponse.isNotEmpty) {
+      for (var playerJson in jsonResponse) {
+        print('entra al for');
+
+        String userName = playerJson['userName'];
+        int totalPoints = playerJson['totalPoints'];
+        int position = playerJson['position'];
+        int avatarId = playerJson['avatarId'];
+
+        PlayerRanking player = PlayerRanking(
+            position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
+
+        players.add(player);
+      }
+
+      return players;
+    }else{
+      //si no hi ha cap winner, retorna llista buida de players
+      return players;
+    }
+  } else {
+    return null;
+  }
+}
