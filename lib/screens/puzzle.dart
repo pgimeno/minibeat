@@ -64,7 +64,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
         imgToShow = img;
         print('IMATGES: ${imgToShow.toString()}');
       });
-      //Fer update de la llista de peçes
+      //Fer update de la llista de peces
       if(imgToShow == null){
         updatePuzzle(List<int>.empty());
       }else{
@@ -141,7 +141,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                       ),
                   SizedBox(height: 10),
                   if(pecesLeft != 0)
-                  Text('Queden $pecesLeft peçes per trobar!', style: TextStyle(fontSize: 17))else
+                  Text('Queden $pecesLeft peces per trobar!', style: TextStyle(fontSize: 17))else
                     Text('Felicitats! Has completat el puzzle!', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: kMiniBeatMainColor)),
                 ]),
               ),

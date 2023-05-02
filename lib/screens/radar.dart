@@ -17,7 +17,7 @@ import 'ar_screen.dart';
 
 
 String missatgeInicial =
-    'Mou-te pel recinte i atrapa totes les peçes del puzzle.';
+    'Mou-te pel recinte i atrapa totes les peces del puzzle.';
 String missatgeDetectat = 'S\'ha detectat una peça a prop!';
 bool isSearching = true;
 late Artifact artifactFound;
@@ -101,7 +101,7 @@ class _RadarScreenState extends State<RadarScreen> {
         .request()
         .isGranted) {
       _positionStreamSubscription =
-          Geolocator.getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.bestForNavigation)).listen((Position position) {
+          Geolocator.getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.best)).listen((Position position) {
             setState(() {
               _currentPosition = PointGeo(position.latitude, position.longitude);
               _checkLocation();
@@ -113,11 +113,11 @@ class _RadarScreenState extends State<RadarScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Location Permission Required'),
-            content: Text('Please grant permission to access your location.'),
+            title: Text('Accepta els permisos d\'ubicació.'),
+            content: Text('Permet l\'accés de l\'aplicació als serveis d\'ubicació.'),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: Text('D\'acord.'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   openAppSettings();
