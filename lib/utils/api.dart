@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:minibeat/models/artifact.dart';
+import 'package:minibeat/models/hunted.dart';
 import 'package:minibeat/models/playerRanking.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -33,7 +34,10 @@ Future<List<PlayerRanking>?> getRanking() async {
         int avatarId = playerJson['avatarId'];
 
         PlayerRanking player = PlayerRanking(
-            position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
+            position: position,
+            userName: userName,
+            totalPoints: totalPoints,
+            avatarId: avatarId);
 
         players.add(player);
       }
@@ -73,7 +77,7 @@ Future<Player> registerUserApi(Player user) async {
   final url = Uri.parse('$kUrlApi/newUser/');
   HttpClient httpClient = HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = IOClient(httpClient);
   final response = await ioClient.post(
     url,
@@ -82,7 +86,7 @@ Future<Player> registerUserApi(Player user) async {
     },
     body: jsonEncode(user.toJson()),
   );
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     return Player.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to create user.');
@@ -93,7 +97,7 @@ Future<Player> registerUserApi(Player user) async {
 Future<PlayerRanking?> getPlayer(String playerName) async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = new IOClient(httpClient);
   final response = await ioClient.get(
     Uri.parse('$kUrlApi/getRankingPosition/$playerName'),
@@ -115,7 +119,7 @@ Future<PlayerRanking?> getPlayer(String playerName) async {
 Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = new IOClient(httpClient);
   final response = await ioClient.get(
     Uri.parse('$kUrlApi/getAvailableArtifacts/$userId'),
@@ -133,7 +137,12 @@ Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
         double arLat = artifactJson['latitude'];
         double arLong = artifactJson['longitude'];
 
-        Artifact ar = Artifact(Id: arId, ImageNumber: arImgNumber, Points: arPoints, Latitude: arLat, Longitude: arLong);
+        Artifact ar = Artifact(
+            Id: arId,
+            ImageNumber: arImgNumber,
+            Points: arPoints,
+            Latitude: arLat,
+            Longitude: arLong);
 
         artifacts.add(ar);
       }
@@ -150,7 +159,7 @@ Future<List<Artifact>?> getAvailableArtifacts(int userId) async {
 Future<List<PlayerRanking>?> getWinners() async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = new IOClient(httpClient);
   final response = await ioClient.get(
     Uri.parse('$kUrlApi/getWinners?limit=1'),
@@ -170,13 +179,16 @@ Future<List<PlayerRanking>?> getWinners() async {
         int avatarId = playerJson['avatarId'];
 
         PlayerRanking player = PlayerRanking(
-            position: position, userName: userName, totalPoints: totalPoints, avatarId: avatarId);
+            position: position,
+            userName: userName,
+            totalPoints: totalPoints,
+            avatarId: avatarId);
 
         players.add(player);
       }
 
       return players;
-    }else{
+    } else {
       //si no hi ha cap winner, retorna llista buida de players
       return players;
     }
@@ -185,11 +197,10 @@ Future<List<PlayerRanking>?> getWinners() async {
   }
 }
 
-
 Future<List<int>?> getHuntedArtifacts(int userId) async {
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
-    ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
   IOClient ioClient = new IOClient(httpClient);
   final response = await ioClient.get(
     Uri.parse('$kUrlApi/getHuntedArtifacts/$userId'),
@@ -208,5 +219,26 @@ Future<List<int>?> getHuntedArtifacts(int userId) async {
     }
   } else {
     return null;
+  }
+}
+
+Future<bool> insertHunted(Hunted hunted) async {
+  final url = Uri.parse('$kUrlApi/newHunted/');
+  HttpClient httpClient = HttpClient()
+    ..badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
+  IOClient ioClient = IOClient(httpClient);
+
+  final response = await ioClient.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body:jsonEncode(hunted.toJson()),
+  );
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception(response.statusCode.toString()+response.body.toString());
   }
 }

@@ -212,7 +212,7 @@ class RadarHasFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    Vibration.vibrate(duration: 2000);
     return Column(
       children: [
         CircleOpenCamera(),
