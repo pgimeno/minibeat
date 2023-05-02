@@ -86,7 +86,7 @@ Future<Player> registerUserApi(Player user) async {
     },
     body: jsonEncode(user.toJson()),
   );
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return Player.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to create user.');
@@ -236,9 +236,10 @@ Future<bool> insertHunted(Hunted hunted) async {
     },
     body:jsonEncode(hunted.toJson()),
   );
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return true;
   } else {
+    print("body: ${jsonEncode(hunted.toJson())}");
     throw Exception(response.statusCode.toString()+response.body.toString());
   }
 }

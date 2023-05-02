@@ -91,24 +91,35 @@ class _SuccessScreenState extends State<SuccessScreen> {
   void didChangeDependencies() {
     print('S\'ha rebut l\'artifact, la seva img num és: ' +
         widget.artifactToShow.ImageNumber.toString());
-    print('S\'ha rebut l\'artifact, la seva img num és: ' +
+    print('S\'ha rebut l\'artifact, la seva id és: ' +
         widget.artifactToShow.Id.toString());
     print('S\'ha rebut el player, el seu nom és: ' +
         widget.playerLogged.userName.toString());
-    print('S\'ha rebut el player, el seu nom és: ' +
+    print('S\'ha rebut el player, el seu id és: ' +
         widget.playerLogged.id.toString());
 
-    Hunted toInsert = Hunted(
-        UserId: widget.playerLogged.id!,
-        ArtifactId: widget.artifactToShow.Id,
-        ArtifactImageNumber: widget.artifactToShow.ImageNumber,
-        PointsGained: kpointsGainedByArtifact);
-    insertNewHunted(toInsert);
+    insertNewHunted();
   }
 
-  void insertNewHunted(Hunted toInsert) async {
-    print(toInsert.toString());
-    await insertHunted(toInsert);
+  void insertNewHunted() async {
+    if (widget.playerLogged.id != null && widget.artifactToShow.Id != null) {
+      Hunted artifact = Hunted(
+          UserId: widget.playerLogged.id!,
+          ArtifactId: widget.artifactToShow.Id,
+          ArtifactImageNumber: widget.artifactToShow.ImageNumber,
+          PointsGained: kpointsGainedByArtifact,
+          User: widget.playerLogged,
+          ArtifactHunted: widget.artifactToShow);
+      try {
+        await insertHunted(artifact);
+        // handle successful insert
+      } catch (e) {
+        print(e.toString());
+        print('FAILED JODER');
+      }
+    } else {
+      // handle missing user or artifact ID
+    }
   }
 
   @override
