@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/models/player.dart';
@@ -18,7 +20,7 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
 
   PlayerRanking? playerInSession = null;
-  String playerName = 'Pol';
+  String playerName = '';
 
   @override
   void didChangeDependencies() {
@@ -156,13 +158,26 @@ class AvatarImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 85.0, bottom: 38.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(38.0),
-        child: Image.asset(
-          'images/avatars/${player?.avatarId}.png',
-          width: 145,
-          height: 145,
-          fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () {
+          final random = Random();
+          final message = profilePhotoMessages[random.nextInt(profilePhotoMessages.length)];
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              duration: Duration(seconds: 5),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(38.0),
+          child: Image.asset(
+            'images/avatars/${player?.avatarId}.png',
+            width: 145,
+            height: 145,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
