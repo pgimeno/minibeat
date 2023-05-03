@@ -5,6 +5,7 @@ import 'package:minibeat/utils/api.dart';
 
 import '../models/player.dart';
 import '../utils/constants.dart';
+
 Player currentPlayer = Player.empty();
 List<int>? imgToShow = List<int>.empty(growable: true);
 
@@ -16,18 +17,17 @@ class PuzzleScreen extends StatefulWidget {
 }
 
 class _PuzzleScreenState extends State<PuzzleScreen> {
+  bool _isLoading = true;
   Map<String, dynamic> arguments = {};
   List<bool> _updatedIndexes = List.generate(16, (_) => false);
   double progres = 0.00;
   int pecesLeft = 16;
 
   @override
-  void initState() {
-
-  }
+  void initState() {}
 
   void updatePuzzle(List<int> indexes) {
-    if (indexes.length > 0){
+    if (indexes.length > 0) {
       setState(() {
         _updatedIndexes = List.generate(16, (index) => indexes.contains(index));
       });
@@ -39,7 +39,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
   void updatePercentatgeProgres(List<int> llistaDesbloquejades) {
     setState(() {
       progres = (llistaDesbloquejades.length / 16) * 100;
-      pecesLeft = 16-llistaDesbloquejades.length;
+      pecesLeft = 16 - llistaDesbloquejades.length;
     });
   }
 
@@ -47,29 +47,31 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     arguments =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
       currentPlayer = arguments['userLogged'];
       getImgToShow();
     });
-
   }
 
   getImgToShow() async {
     int? playerId = currentPlayer.id;
     if (playerId != null) {
-      List<int>? img  = await getHuntedArtifacts(playerId);
+      List<int>? img = await getHuntedArtifacts(playerId);
       setState(() {
         imgToShow = img;
       });
       //Fer update de la llista de peces
-      if(imgToShow == null){
+      if (imgToShow == null) {
         updatePuzzle(List<int>.empty());
-      }else{
+      } else {
         updatePuzzle(imgToShow!);
       }
     }
+
+    _isLoading = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,51 +98,64 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
               ),
             ),
             Expanded(
-              child: GridView.builder(
-                itemCount: 16,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  final imagePath = _updatedIndexes[index]
-                      ? 'images/puzzle/${index}.jpg'
-                      : 'images/minibeatlogo.png';
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
+              child: _isLoading // show CircularProgressIndicator while loading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GridView.builder(
+                      itemCount: 16,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
                       ),
+                      itemBuilder: (BuildContext context, int index) {
+                        final imagePath = _updatedIndexes[index]
+                            ? 'images/puzzle/${index}.jpg'
+                            : 'images/minibeatlogo.png';
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                          child: Image.asset(
+                            imagePath,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
                     ),
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 14.0, left: 14.0, bottom: 100),
+              padding:
+                  const EdgeInsets.only(right: 14.0, left: 14.0, bottom: 100),
               child: Center(
-                child: Column(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(fontSize: 22),
-                          children: [
-                            TextSpan(text: 'El teu progrés: '),
-                            TextSpan(
-                              text: '$progres%',
-                              style: TextStyle(color: kMiniBeatMainColor, fontSize: 22, fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                child: Column(children: [
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 22),
+                      children: [
+                        TextSpan(text: 'El teu progrés: '),
+                        TextSpan(
+                          text: '$progres%',
+                          style: TextStyle(
+                              color: kMiniBeatMainColor,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 10),
-                  if(pecesLeft != 0)
-                  Text('Queden $pecesLeft peces per trobar!', style: TextStyle(fontSize: 17))else
-                    Text('Felicitats! Has completat el puzle!', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: kMiniBeatMainColor)),
+                  if (pecesLeft != 0)
+                    Text('Queden $pecesLeft peces per trobar!',
+                        style: TextStyle(fontSize: 17))
+                  else
+                    Text('Felicitats! Has completat el puzle!',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: kMiniBeatMainColor)),
                 ]),
               ),
             ),

@@ -116,7 +116,7 @@ class _RankingScreenState extends State<RankingScreen> {
                   } else if (snapshot.data == null || snapshot.data!.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Text('Sigues la primera en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                      child: Text('🥇Sigues la primera en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
                     );
                   } else {
                     return Center(child: CircularProgressIndicator());

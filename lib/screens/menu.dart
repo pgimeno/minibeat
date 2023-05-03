@@ -137,7 +137,8 @@ class _MenuScreenState extends State<MenuScreen> {
                 playerInSession != null
                     ? AvatarImage(playerInSession!)
                     : Container(
-                        height: MediaQuery.of(context).size.height / 3,
+                        height: MediaQuery.of(context).size.height /7,
+                        width: MediaQuery.of(context).size.width /4,
                         child: CircularProgressIndicator()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
