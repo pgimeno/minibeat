@@ -57,12 +57,10 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
 
   getImgToShow() async {
     int? playerId = currentPlayer.id;
-    print('PLAYER ID: ${currentPlayer.id.toString()}');
     if (playerId != null) {
       List<int>? img  = await getHuntedArtifacts(playerId);
       setState(() {
         imgToShow = img;
-        print('IMATGES: ${imgToShow.toString()}');
       });
       //Fer update de la llista de peces
       if(imgToShow == null){
@@ -93,7 +91,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 30.0, bottom: 50),
               child: Text(
-                'Completa el puzzle:',
+                'Completa el puzle:',
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
@@ -142,7 +140,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                   SizedBox(height: 10),
                   if(pecesLeft != 0)
                   Text('Queden $pecesLeft peces per trobar!', style: TextStyle(fontSize: 17))else
-                    Text('Felicitats! Has completat el puzzle!', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: kMiniBeatMainColor)),
+                    Text('Felicitats! Has completat el puzle!', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: kMiniBeatMainColor)),
                 ]),
               ),
             ),

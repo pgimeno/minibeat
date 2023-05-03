@@ -35,18 +35,6 @@ Future<List<PlayerRanking>?> getWinnersFromApi() async {
 
   try {
     List<PlayerRanking>? winners = await getWinners();
-    if (winners != null && winners.isNotEmpty) {
-      print('Winners:');
-      for (PlayerRanking player in winners) {
-        print('  Position: ${player.position}');
-        print('  Username: ${player.userName}');
-        print('  Total points: ${player.totalPoints}');
-        print('  Avatar ID: ${player.avatarId}');
-      }
-    } else {
-      print('No winners found.');
-    }
-
     return winners;
   } catch (e) {
     print(e.toString());

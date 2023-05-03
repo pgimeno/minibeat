@@ -13,7 +13,7 @@ import 'package:minibeat/utils/constants.dart';
 
 List<int> llistaPeces = [];
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   print(await ArCoreController.checkArCoreAvailability());
   print(await ArCoreController.checkIsArCoreInstalled());
@@ -25,27 +25,23 @@ class MyApp extends StatelessWidget {
   // root
   @override
   Widget build(BuildContext context) {
-    //getPlayer();
-    print('Hello');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MiniBeat Go!',
-      theme: createCustomLightTheme(),
-      initialRoute: '/login',
-      //pantalla inicial
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
-        //'/menu': (context) => MenuScreen(),
-        '/ranking': (context) => RankingScreen(),
-        '/puzzle' :(context) => PuzzleScreen(),
-        '/radar': (context) => RadarScreen(),
-        //'/hunt': (context) => ArScreen(),
-        //'/success': (context) => SuccessScreen(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'MiniBeat Go!',
+        theme: createCustomLightTheme(),
+        initialRoute: '/login',
+        //pantalla inicial
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/register': (context) => RegisterScreen(),
+          //'/menu': (context) => MenuScreen(),
+          '/ranking': (context) => RankingScreen(),
+          '/puzzle': (context) => PuzzleScreen(),
+          '/radar': (context) => RadarScreen(),
+          //'/hunt': (context) => ArScreen(),
+          //'/success': (context) => SuccessScreen(),
+        });
   }
 }
 

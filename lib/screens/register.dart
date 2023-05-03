@@ -440,7 +440,7 @@ class TitolPantalla extends StatelessWidget {
     return const Align(
       alignment: AlignmentDirectional.centerStart,
       child: Padding(
-        padding: EdgeInsets.only(left: 40.0, top: 100),
+        padding: EdgeInsets.only(left: 40.0, top: 90),
         child: Text(
           'Registre',
           textAlign: TextAlign.start,

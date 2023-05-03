@@ -46,8 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
           if (playerExists != null ) {
             String hashPassword = Utilities().hashPassword(password);
             if(hashPassword == playerExists.password){
-              //Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username, 'userLogged': playerExists});
-              print("LOGIN PLAYER EXISTS ${playerExists.id.toString()}");
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuScreen(playerLogged: playerExists)));
 
             }else{
@@ -140,7 +138,6 @@ class GoToRegisterScreenText extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Open register screen
-        print('tapped!!');
         Navigator.pushNamed(context, '/register');
       },
       child: const Text(

@@ -8,7 +8,6 @@ import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 
 class MenuScreen extends StatefulWidget {
-
   final Player playerLogged;
 
   MenuScreen({required this.playerLogged});
@@ -18,7 +17,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-
   PlayerRanking? playerInSession = null;
   String playerName = '';
 
@@ -28,8 +26,6 @@ class _MenuScreenState extends State<MenuScreen> {
 
     setState(() {
       playerName = widget.playerLogged.userName;
-      print('EL PLAYER QUE HA ARRIBAT AL MENU: ');
-      print(widget.playerLogged.userName.toString());
     });
     getPlayerLogged(playerName);
   }
@@ -45,7 +41,6 @@ class _MenuScreenState extends State<MenuScreen> {
       setState(() {
         playerInSession = player;
       });
-      print(player.toString());
     } catch (e) {
       print('Error: $e');
     }
@@ -111,13 +106,23 @@ class _MenuScreenState extends State<MenuScreen> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             backgroundColor: kMiniBeatGradientLast,
-                            title: Text('Com funciona l\'aplicació?', style: TextStyle(color: Colors.white),),
+                            title: Text(
+                              'Com funciona l\'aplicació?',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             content: SingleChildScrollView(
-                              child: Text(kHowToUseApp,  textAlign: TextAlign.left, style: TextStyle(color: Colors.white),),
+                              child: Text(
+                                kHowToUseApp,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             actions: [
                               TextButton(
-                                child: Text('D\'acord!', style: TextStyle(color: Colors.white),),
+                                child: Text(
+                                  'D\'acord!',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -126,14 +131,14 @@ class _MenuScreenState extends State<MenuScreen> {
                           );
                         },
                       );
-
-
                     },
                   ),
                 ),
                 playerInSession != null
                     ? AvatarImage(playerInSession!)
-                    : Container(height: MediaQuery.of(context).size.height/3,child: CircularProgressIndicator()),
+                    : Container(
+                        height: MediaQuery.of(context).size.height / 3,
+                        child: CircularProgressIndicator()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -165,10 +170,11 @@ class _MenuScreenState extends State<MenuScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                StartPlayButton(playerLogged: widget.playerLogged ?? Player.empty()),
-                PuzzleScreenButton(playerLogged: widget.playerLogged ?? Player.empty()),
-                RankingButton(
-                    player: playerInSession ?? PlayerRanking.empty()),
+                StartPlayButton(
+                    playerLogged: widget.playerLogged ?? Player.empty()),
+                PuzzleScreenButton(
+                    playerLogged: widget.playerLogged ?? Player.empty()),
+                RankingButton(player: playerInSession ?? PlayerRanking.empty()),
                 DisconnectButtonText(),
               ],
             ),
@@ -191,7 +197,8 @@ class AvatarImage extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           final random = Random();
-          final message = profilePhotoMessages[random.nextInt(profilePhotoMessages.length)];
+          final message =
+              profilePhotoMessages[random.nextInt(profilePhotoMessages.length)];
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(message),
@@ -248,11 +255,9 @@ class RankingButton extends StatelessWidget {
 }
 
 class StartPlayButton extends StatelessWidget {
-
   final Player playerLogged;
-  const StartPlayButton({
-    super.key, required this.playerLogged
-  });
+
+  const StartPlayButton({super.key, required this.playerLogged});
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +265,8 @@ class StartPlayButton extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/radar', arguments: {'userLogged': playerLogged});
+          Navigator.pushNamed(context, '/radar',
+              arguments: {'userLogged': playerLogged});
         },
         child: Text(
           'Comença a jugar!',
@@ -283,9 +289,8 @@ class StartPlayButton extends StatelessWidget {
 
 class PuzzleScreenButton extends StatelessWidget {
   final Player playerLogged;
-  const PuzzleScreenButton({
-    super.key, required this.playerLogged
-  });
+
+  const PuzzleScreenButton({super.key, required this.playerLogged});
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +298,8 @@ class PuzzleScreenButton extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/puzzle', arguments: {'userLogged': playerLogged});
+          Navigator.pushNamed(context, '/puzzle',
+              arguments: {'userLogged': playerLogged});
         },
         child: Text(
           'El meu puzzle',
