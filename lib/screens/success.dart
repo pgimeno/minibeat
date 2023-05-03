@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/models/artifact.dart';
 import 'package:minibeat/models/hunted.dart';
-import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/utils/api.dart';
 
 import '../models/player.dart';

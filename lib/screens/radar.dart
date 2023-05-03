@@ -107,8 +107,8 @@ class _RadarScreenState extends State<RadarScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Accepta els permisos d\'ubicació.'),
-            content: Text('Permet l\'accés de l\'aplicació als serveis d\'ubicació.'),
+            title: Text('Accepta els permisos d\'ubicació.', style: TextStyle(color: Colors.black),),
+            content: Text('Permet l\'accés de l\'aplicació als serveis d\'ubicació.', style: TextStyle(color: Colors.black)),
             actions: [
               TextButton(
                 child: Text('D\'acord.'),
@@ -133,6 +133,8 @@ class _RadarScreenState extends State<RadarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
