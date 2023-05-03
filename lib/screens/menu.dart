@@ -99,9 +99,39 @@ class _MenuScreenState extends State<MenuScreen> {
           child: SafeArea(
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.help_outline, color: Colors.white),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: kMiniBeatGradientLast,
+                            title: Text('Com funciona l\'aplicació?', style: TextStyle(color: Colors.white),),
+                            content: SingleChildScrollView(
+                              child: Text(kHowToUseApp, style: TextStyle(color: Colors.white),),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text('D\'acord!', style: TextStyle(color: Colors.white),),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+
+                    },
+                  ),
+                ),
                 playerInSession != null
                     ? AvatarImage(playerInSession!)
-                    : Container(),
+                    : Container(height: MediaQuery.of(context).size.height/3,child: CircularProgressIndicator()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -131,7 +161,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 StartPlayButton(playerLogged: widget.playerLogged ?? Player.empty()),
                 PuzzleScreenButton(playerLogged: widget.playerLogged ?? Player.empty()),
