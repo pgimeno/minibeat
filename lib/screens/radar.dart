@@ -17,7 +17,7 @@ import 'ar_screen.dart';
 
 
 String missatgeInicial =
-    'Mou-te pel recinte i atrapa totes les peces del puzzle.';
+    'Mou-te pel recinte i atrapa totes les peces del puzle.';
 String missatgeDetectat = 'S\'ha detectat una peça a prop!';
 bool isSearching = true;
 late Artifact artifactFound;
@@ -50,7 +50,6 @@ class _RadarScreenState extends State<RadarScreen> {
   //Agafar la llista d'Artifacts disponibles per aquest usuari en aquest moment.
   getCurrentAvailableArtifacts() async{
     int? playerId = playerLogged.id;
-    print('PLAYERID: $playerId');
     if (playerId != null) {
       artifactsAvailable = await getAvailableArtifacts(playerId);
     }
@@ -68,24 +67,20 @@ class _RadarScreenState extends State<RadarScreen> {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
       playerLogged = arguments['userLogged'];
-      print('ARGUMENTS PLAYERLOGGED: ${playerLogged.id.toString()}');
     });
 
     //Take list
     getCurrentAvailableArtifacts();
-    print(artifactsAvailable.toString());
-
 
   }
 
   void _checkLocation() {
     // Check user location and update isSearching variable
-    // For example, if user is within a certain radius of a location:
     for (Artifact ar in artifactsAvailable!) {
-        print("LATITUDE ACTUAL ${_currentPosition.latitude}");
+
         double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, _currentPosition.latitude, _currentPosition.longitude);
         if (distanceInM<=distanceToSearch){
-          print("ESTIC A MENYS DE DOS METRES");
+
           setState(() {
             artifactFound = ar;
             isSearching = false;
@@ -105,7 +100,6 @@ class _RadarScreenState extends State<RadarScreen> {
             setState(() {
               _currentPosition = PointGeo(position.latitude, position.longitude);
               _checkLocation();
-              print(_currentPosition.latitude.toString());
             });
           });
     } else {

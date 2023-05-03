@@ -61,10 +61,7 @@ class _ArScreenState extends State<ArScreen> {
     _addCube(arCoreController, widget.artifactToShow.ImageNumber);
 
     arCoreController.onNodeTap = (node) {
-      print('User tapped!!!!');
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SuccessScreen(artifactToShow: widget.artifactToShow, playerLogged: widget.playerLogged,)));
-      /*Navigator.pushNamed(context, '/success',
-          arguments: {'artifactHunted': artifactToShow});*/
     };
   }
 
@@ -72,13 +69,6 @@ class _ArScreenState extends State<ArScreen> {
     double xAxis = Random().nextDouble() * 5;
     double yAxis = Random().nextDouble() * 3;
     double zAxis = Random().nextDouble() * 6 - 3;
-
-    print('Ubicacio x: ' +
-        xAxis.toString() +
-        'y: ' +
-        yAxis.toString() +
-        'z: ' +
-        zAxis.toString());
 
     final bytes = (await rootBundle.load('images/puzzle/$imageNum.jpg'))
         .buffer

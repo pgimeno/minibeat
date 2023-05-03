@@ -35,18 +35,6 @@ Future<List<PlayerRanking>?> getWinnersFromApi() async {
 
   try {
     List<PlayerRanking>? winners = await getWinners();
-    if (winners != null && winners.isNotEmpty) {
-      print('Winners:');
-      for (PlayerRanking player in winners) {
-        print('  Position: ${player.position}');
-        print('  Username: ${player.userName}');
-        print('  Total points: ${player.totalPoints}');
-        print('  Avatar ID: ${player.avatarId}');
-      }
-    } else {
-      print('No winners found.');
-    }
-
     return winners;
   } catch (e) {
     print(e.toString());
@@ -128,7 +116,7 @@ class _RankingScreenState extends State<RankingScreen> {
                   } else if (snapshot.data == null || snapshot.data!.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Text('Sigues la primera en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                      child: Text('🥇Sigues la primera en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
                     );
                   } else {
                     return Center(child: CircularProgressIndicator());

@@ -1,53 +1,46 @@
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minibeat/screens/ar_screen.dart';
 import 'package:minibeat/screens/login.dart';
-import 'package:minibeat/screens/menu.dart';
 import 'package:minibeat/screens/puzzle.dart';
 import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/register.dart';
-import 'package:minibeat/screens/success.dart';
 import 'package:minibeat/utils/constants.dart';
 
 List<int> llistaPeces = [];
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print(await ArCoreController.checkArCoreAvailability());
-  print(await ArCoreController.checkIsArCoreInstalled());
+  bool isArCoreAvailable = await ArCoreController.checkArCoreAvailability();
+  bool isArCoreInstalled = await ArCoreController.checkIsArCoreInstalled();
 
-  runApp(MyApp());
+    runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
   // root
   @override
   Widget build(BuildContext context) {
-    //getPlayer();
-    print('Hello');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MiniBeat Go!',
-      theme: createCustomLightTheme(),
-      initialRoute: '/login',
-      //pantalla inicial
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
-        //'/menu': (context) => MenuScreen(),
-        '/ranking': (context) => RankingScreen(),
-        '/puzzle' :(context) => PuzzleScreen(),
-        '/radar': (context) => RadarScreen(),
-        //'/hunt': (context) => ArScreen(),
-        //'/success': (context) => SuccessScreen(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'MiniBeat Go!',
+        theme: createCustomLightTheme(),
+        initialRoute: '/login',
+        //pantalla inicial
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/register': (context) => RegisterScreen(),
+          '/ranking': (context) => RankingScreen(),
+          '/puzzle': (context) => PuzzleScreen(),
+          '/radar': (context) => RadarScreen(),
+
+        });
   }
 }
+
 
 ThemeData createCustomLightTheme() {
   final ThemeData base = ThemeData.light();

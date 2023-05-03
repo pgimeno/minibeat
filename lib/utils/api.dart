@@ -26,8 +26,6 @@ Future<List<PlayerRanking>?> getRanking() async {
 
     if (jsonResponse.isNotEmpty) {
       for (var playerJson in jsonResponse) {
-        print('entra al for');
-
         String userName = playerJson['userName'];
         int totalPoints = playerJson['totalPoints'];
         int position = playerJson['position'];
@@ -171,8 +169,6 @@ Future<List<PlayerRanking>?> getWinners() async {
 
     if (jsonResponse.isNotEmpty) {
       for (var playerJson in jsonResponse) {
-        print('entra al for');
-
         String userName = playerJson['userName'];
         int totalPoints = playerJson['totalPoints'];
         int position = playerJson['position'];
@@ -234,12 +230,12 @@ Future<bool> insertHunted(Hunted hunted) async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body:jsonEncode(hunted.toJson()),
+    body: jsonEncode(hunted.toJson()),
   );
   if (response.statusCode == 201) {
     return true;
   } else {
     print("body: ${jsonEncode(hunted.toJson())}");
-    throw Exception(response.statusCode.toString()+response.body.toString());
+    throw Exception(response.statusCode.toString() + response.body.toString());
   }
 }

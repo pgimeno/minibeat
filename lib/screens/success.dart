@@ -89,15 +89,6 @@ class _SuccessScreenState extends State<SuccessScreen> {
 
   @override
   void didChangeDependencies() {
-    print('S\'ha rebut l\'artifact, la seva img num és: ' +
-        widget.artifactToShow.ImageNumber.toString());
-    print('S\'ha rebut l\'artifact, la seva id és: ' +
-        widget.artifactToShow.Id.toString());
-    print('S\'ha rebut el player, el seu nom és: ' +
-        widget.playerLogged.userName.toString());
-    print('S\'ha rebut el player, el seu id és: ' +
-        widget.playerLogged.id.toString());
-
     insertNewHunted();
   }
 
@@ -113,7 +104,6 @@ class _SuccessScreenState extends State<SuccessScreen> {
         // handle successful insert
       } catch (e) {
         print(e.toString());
-        print('FAILED JODER');
       }
     } else {
       // handle missing user or artifact ID

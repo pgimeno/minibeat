@@ -13,7 +13,6 @@ class Utilities{
     return hashString;
   }
   showMessageDialog(BuildContext context, String title, String subtitle) {
-    print("UTILITIES");
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
