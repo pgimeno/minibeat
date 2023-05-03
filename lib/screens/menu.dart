@@ -113,7 +113,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             backgroundColor: kMiniBeatGradientLast,
                             title: Text('Com funciona l\'aplicació?', style: TextStyle(color: Colors.white),),
                             content: SingleChildScrollView(
-                              child: Text(kHowToUseApp, style: TextStyle(color: Colors.white),),
+                              child: Text(kHowToUseApp,  textAlign: TextAlign.justify, style: TextStyle(color: Colors.white),),
                             ),
                             actions: [
                               TextButton(

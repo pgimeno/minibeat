@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/gestures.dart';
 import 'package:minibeat/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -219,7 +220,7 @@ class AgreementText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
             TextSpan(
               text: 'Estic d\'acord amb el ',
@@ -234,7 +235,31 @@ class AgreementText extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
                 color: kMiniBeatMainColor,
-              ),
+
+              ),recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: kMiniBeatGradientLast,
+                      title: Text('Termes i condicions', style: TextStyle(color: Colors.white),),
+                      content: SingleChildScrollView(
+                        child: Text(kTermsOfService,  textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,),),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text('D\'acord!', style: TextStyle(color: Colors.white),),
+
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             ),
             TextSpan(
               text: ' de les meves dades.',
