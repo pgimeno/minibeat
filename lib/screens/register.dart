@@ -234,7 +234,7 @@ class AgreementText extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: kMiniBeatMainColor,
+                color: kMiniBeatMainColorLighter,
 
               ),recognizer: TapGestureRecognizer()
               ..onTap = () {
@@ -245,7 +245,7 @@ class AgreementText extends StatelessWidget {
                       backgroundColor: kMiniBeatGradientLast,
                       title: Text('Termes i condicions', style: TextStyle(color: Colors.white),),
                       content: SingleChildScrollView(
-                        child: Text(kTermsOfService,  textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,),),
+                        child: Text(kTermsOfService,  textAlign: TextAlign.left, style: TextStyle(color: Colors.white,),),
                       ),
                       actions: [
                         TextButton(

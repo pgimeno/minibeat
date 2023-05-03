@@ -147,7 +147,7 @@ class GoToRegisterScreenText extends StatelessWidget {
         'Registra\'t',
         style: TextStyle(
           decoration: TextDecoration.underline,
-          decorationThickness: 0.3,
+          decorationThickness: 1,
           fontWeight: FontWeight.bold,
           color: Colors.white,
           fontSize: 14,
