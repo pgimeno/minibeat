@@ -107,9 +107,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
           UserId: widget.playerLogged.id!,
           ArtifactId: widget.artifactToShow.Id,
           ArtifactImageNumber: widget.artifactToShow.ImageNumber,
-          PointsGained: kpointsGainedByArtifact,
-          User: widget.playerLogged,
-          ArtifactHunted: widget.artifactToShow);
+          PointsGained: kpointsGainedByArtifact);
       try {
         await insertHunted(artifact);
         // handle successful insert

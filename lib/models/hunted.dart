@@ -9,26 +9,21 @@ class Hunted {
   final int ArtifactId;
   final int ArtifactImageNumber;
   final int PointsGained;
-  final Player User;
-  final Artifact ArtifactHunted;
+
 
   Hunted(
       {this.Id,
       required this.UserId,
       required this.ArtifactId,
       required this.ArtifactImageNumber,
-      required this.PointsGained,
-      required this.User,
-      required this.ArtifactHunted});
+      required this.PointsGained});
 
   Hunted.empty()
       : Id = 0,
         UserId = 0,
         ArtifactId = 0,
         ArtifactImageNumber = 0,
-        PointsGained = 0,
-        ArtifactHunted = Artifact.empty(),
-        User = Player.empty();
+        PointsGained = 0;
 
   Map<String, dynamic> toJson() {
     return {
@@ -36,9 +31,7 @@ class Hunted {
       'UserId': UserId,
       'ArtifactId': ArtifactId,
       'ArtifactImageNumber': ArtifactImageNumber,
-      'PointsGained': PointsGained,
-      'User': User.toJson(),
-      'ArtifactI': ArtifactHunted.toJson()
+      'PointsGained': PointsGained
     };
   }
 
