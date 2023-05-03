@@ -1,14 +1,29 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:minibeat/models/artifact.dart';
+import 'package:minibeat/models/point.dart';
+import 'package:minibeat/utils/api.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vibration/vibration.dart';
-import 'dart:async';
+import '../models/player.dart';
+import '../utils/utilities.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 
-import 'hunt_action.dart';
+import 'ar_screen.dart';
 
-String missatgeInicial = 'Mou-te pel recinte i atrapa els miniBeat';
-String missatgeDetectat = 'S\'ha detectat un miniBeat a prop!';
+
+String missatgeInicial =
+    'Mou-te pel recinte i atrapa totes les peces del puzzle.';
+String missatgeDetectat = 'S\'ha detectat una peça a prop!';
 bool isSearching = true;
+late Artifact artifactFound;
+late Player playerLogged;
+List<Artifact>? artifactsAvailable = List.empty(growable: true);
+late StreamSubscription<Position> _positionStreamSubscription;
 
 String checkMessageToShow() {
   if (isSearching) {
@@ -24,6 +39,102 @@ class RadarScreen extends StatefulWidget {
 }
 
 class _RadarScreenState extends State<RadarScreen> {
+  Map<String, dynamic> arguments = {};
+  late PointGeo _currentPosition = PointGeo(0.0, 0.0);
+
+  @override
+  void initState() {
+    _checkLocationPermission();
+  }
+
+  //Agafar la llista d'Artifacts disponibles per aquest usuari en aquest moment.
+  getCurrentAvailableArtifacts() async{
+    int? playerId = playerLogged.id;
+    print('PLAYERID: $playerId');
+    if (playerId != null) {
+      artifactsAvailable = await getAvailableArtifacts(playerId);
+    }
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setState(() {
+      isSearching = true;
+    });
+    //Take arguments
+    arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    setState(() {
+      playerLogged = arguments['userLogged'];
+      print('ARGUMENTS PLAYERLOGGED: ${playerLogged.id.toString()}');
+    });
+
+    //Take list
+    getCurrentAvailableArtifacts();
+    print(artifactsAvailable.toString());
+
+
+  }
+
+  void _checkLocation() {
+    // Check user location and update isSearching variable
+    // For example, if user is within a certain radius of a location:
+    for (Artifact ar in artifactsAvailable!) {
+        print("LATITUDE ACTUAL ${_currentPosition.latitude}");
+        double distanceInM = Utilities().distanceBetweenPoints(ar.Latitude, ar.Longitude, _currentPosition.latitude, _currentPosition.longitude);
+        if (distanceInM<=distanceToSearch){
+          print("ESTIC A MENYS DE DOS METRES");
+          setState(() {
+            artifactFound = ar;
+            isSearching = false;
+
+          });
+        }
+    }
+  }
+
+
+  Future<void> _checkLocationPermission() async {
+    if (await Permission.location
+        .request()
+        .isGranted) {
+      _positionStreamSubscription =
+          Geolocator.getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.best)).listen((Position position) {
+            setState(() {
+              _currentPosition = PointGeo(position.latitude, position.longitude);
+              _checkLocation();
+              print(_currentPosition.latitude.toString());
+            });
+          });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Accepta els permisos d\'ubicació.'),
+            content: Text('Permet l\'accés de l\'aplicació als serveis d\'ubicació.'),
+            actions: [
+              TextButton(
+                child: Text('D\'acord.'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _positionStreamSubscription.cancel();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,14 +167,7 @@ class _RadarScreenState extends State<RadarScreen> {
     );
   }
 
-  @override
-  void initState() {
-    Timer(Duration(seconds: 6), () {
-      setState(() {
-        isSearching = false;
-      });
-    });
-  }
+
 }
 
 class RadarBuscant extends StatelessWidget {
@@ -109,7 +213,6 @@ class RadarHasFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Vibration.vibrate(duration: 2000);
-
     return Column(
       children: [
         CircleOpenCamera(),
@@ -166,9 +269,25 @@ class CircleOpenCamera extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/hunt');
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ArScreen(playerLogged: playerLogged, artifactToShow: artifactFound,),
+          ),
+        ).then((_) {
+          _positionStreamSubscription.cancel();
+        });
+        /*
+        Navigator.pushNamed(context, '/hunt', arguments: {
+          'playerLogged': playerLogged,
+          'artifactToShow': artifactFound
+        });
+
+         */
       },
       child: Stack(
         children: [

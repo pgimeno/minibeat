@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minibeat/screens/menu.dart';
 import 'package:minibeat/utils/constants.dart';
 import 'package:http/http.dart';
 
 import '../models/player.dart';
 import '../utils/api.dart';
-import '../utils/hashPassword.dart';
+import '../utils/utilities.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final RegExp regExp = RegExp(r'^[a-zA-Z0-9_]+$');
 
   @override
   void didChangeDependencies() {
@@ -39,66 +39,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (username.isNotEmpty && password.isNotEmpty) {
       //Check if user exists - Avisar
-      String sanitizedUsername = validateInput(username);
+      String sanitizedUsername = Utilities().validateInput(username, context);
       if(sanitizedUsername.isNotEmpty){
         try {
           Player? playerExists = await checkUser(username);
           if (playerExists != null ) {
-            String hashPassword = HashMaker().hashPassword(password);
+            String hashPassword = Utilities().hashPassword(password);
             if(hashPassword == playerExists.password){
-              Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username});
+              //Navigator.pushNamed(context, '/menu', arguments: {'userNamePassed': username, 'userLogged': playerExists});
+              print("LOGIN PLAYER EXISTS ${playerExists.id.toString()}");
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MenuScreen(playerLogged: playerExists)));
+
             }else{
-              showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
+              Utilities().showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
             }
           } else {
-            showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
+            Utilities().showMessageDialog(context, 'Informació incorrecte', 'Indica un nom d\'usuari i contrasenya vàlids');
           }
         } catch (e) {
-          showMessageDialog(context, 'Error inesperat', 'No s\'ha pogut');
+          Utilities().showMessageDialog(context, 'Error inesperat', 'No s\'ha pogut');
         }
       }
     } else {
-      showMessageDialog(context, 'Informació incompleta', 'Has d\'indicar un nom d\'usuari i una contrasenya');
+      Utilities().showMessageDialog(context, 'Informació incompleta', 'Has d\'indicar un nom d\'usuari i una contrasenya');
     }
-  }
-
-  showMessageDialog(BuildContext context, String title, String subtitle) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        Navigator.pop(context, false);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.black),
-      ),
-      content:  Text(
-        subtitle,
-        style: TextStyle(color: Colors.black),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  String validateInput(String text) {
-    String sanitizedText = '';
-    if (regExp.hasMatch(text)) {
-      sanitizedText = text;
-    } else {
-      showMessageDialog(context, 'Caracters invàlids', 'Només es permeten lletres, números i barra baixa "_"');
-    }
-    return sanitizedText;
   }
 
   @override
@@ -258,7 +222,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
             Icons.lock,
             color: Colors.white,
           ),
-          hintText: 'Contrassenya',
+          hintText: 'Contrasenya',
           border: UnderlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 15),
         ),
