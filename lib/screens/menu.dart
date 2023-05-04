@@ -83,6 +83,8 @@ class _MenuScreenState extends State<MenuScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -94,90 +96,92 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
           ),
           child: SafeArea(
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(Icons.help_outline, color: Colors.white),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: kMiniBeatGradientLast,
-                            title: Text(
-                              'Com funciona l\'aplicació?',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            content: SingleChildScrollView(
-                              child: Text(
-                                kHowToUseApp,
-                                textAlign: TextAlign.left,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: Icon(Icons.help_outline, color: Colors.white),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: kMiniBeatGradientLast,
+                              title: Text(
+                                'Com funciona l\'aplicació?',
                                 style: TextStyle(color: Colors.white),
                               ),
-                            ),
-                            actions: [
-                              TextButton(
+                              content: SingleChildScrollView(
                                 child: Text(
-                                  'D\'acord!',
+                                  kHowToUseApp,
+                                  textAlign: TextAlign.left,
                                   style: TextStyle(color: Colors.white),
                                 ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    },
+                              actions: [
+                                TextButton(
+                                  child: Text(
+                                    'D\'acord!',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                playerInSession != null
-                    ? AvatarImage(playerInSession!)
-                    : Container(
-                        height: MediaQuery.of(context).size.height /7,
-                        width: MediaQuery.of(context).size.width /4,
-                        child: CircularProgressIndicator()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Hola, ',
-                      style: TextStyle(fontSize: 33, color: Colors.white),
-                    ),
-                    Text(
-                      playerInSession?.userName ?? '',
-                      style: TextStyle(
-                          fontSize: 33,
-                          color: kMiniBeatMainColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.star, color: kMiniBeatMainColor, size: 22),
-                    SizedBox(width: 4),
-                    Text(
-                      playerInSession?.totalPoints.toString() ?? '',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                StartPlayButton(
-                    playerLogged: widget.playerLogged ?? Player.empty()),
-                PuzzleScreenButton(
-                    playerLogged: widget.playerLogged ?? Player.empty()),
-                RankingButton(player: playerInSession ?? PlayerRanking.empty()),
-                DisconnectButtonText(),
-              ],
+                  playerInSession != null
+                      ? AvatarImage(playerInSession!)
+                      : Container(
+                          height: MediaQuery.of(context).size.height /7,
+                          width: MediaQuery.of(context).size.width /4,
+                          child: CircularProgressIndicator()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hola, ',
+                        style: TextStyle(fontSize: 33, color: Colors.white),
+                      ),
+                      Text(
+                        playerInSession?.userName ?? '',
+                        style: TextStyle(
+                            fontSize: 33,
+                            color: kMiniBeatMainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.star, color: kMiniBeatMainColor, size: 22),
+                      SizedBox(width: 4),
+                      Text(
+                        playerInSession?.totalPoints.toString() ?? '',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  StartPlayButton(
+                      playerLogged: widget.playerLogged ?? Player.empty()),
+                  PuzzleScreenButton(
+                      playerLogged: widget.playerLogged ?? Player.empty()),
+                  RankingButton(player: playerInSession ?? PlayerRanking.empty()),
+                  DisconnectButtonText(),
+                ],
+              ),
             ),
           ),
         ),
@@ -194,7 +198,7 @@ class AvatarImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 85.0, bottom: 38.0),
+      padding: const EdgeInsets.only(top: 45.0, bottom: 38.0),
       child: GestureDetector(
         onTap: () {
           final random = Random();
@@ -237,7 +241,7 @@ class RankingButton extends StatelessWidget {
               arguments: {'player': player}); //Missing arguments
         },
         child: Text(
-          'Ranking',
+          'Rànquing',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
@@ -270,7 +274,7 @@ class StartPlayButton extends StatelessWidget {
               arguments: {'userLogged': playerLogged});
         },
         child: Text(
-          'Comença a jugar!',
+          'Buscar peces!',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
@@ -303,7 +307,7 @@ class PuzzleScreenButton extends StatelessWidget {
               arguments: {'userLogged': playerLogged});
         },
         child: Text(
-          'El meu puzzle',
+          'El meu puzle',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
@@ -370,7 +374,7 @@ class DisconnectButtonText extends StatelessWidget {
         _logout(context);
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 60.0),
+        padding: const EdgeInsets.only(top: 30.0),
         child: Text(
           'Desconectar',
           style: TextStyle(

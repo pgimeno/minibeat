@@ -81,24 +81,22 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const IconImage(),
-                const TitolPantalla(),
-                const SubtitolPantalla(),
-                const SizedBox(height: 20),
-                TextFieldUserName(userNameController: _userNameController),
-                TextFieldPassword(passwordController: _passwordController),
-                const SizedBox(height: 50),
-                LoginButton(
-                  loginCallback: loginUser,
-                ),
-                const SizedBox(height: 20),
-                const GoToRegisterScreenText(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const IconImage(),
+              const TitolPantalla(),
+              const SubtitolPantalla(),
+              const SizedBox(height: 20),
+              TextFieldUserName(userNameController: _userNameController),
+              TextFieldPassword(passwordController: _passwordController),
+              const SizedBox(height: 50),
+              LoginButton(
+                loginCallback: loginUser,
+              ),
+              const SizedBox(height: 20),
+              const GoToRegisterScreenText(),
+            ],
           ),
         ),
       ),

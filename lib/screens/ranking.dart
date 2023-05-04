@@ -128,7 +128,7 @@ class _RankingScreenState extends State<RankingScreen> {
 
               SizedBox(height:25),
               Text(
-                'Ranking',
+                'Rànquing',
                 style: TextStyle(fontSize: 24),
               ),
               SizedBox(height: 5),

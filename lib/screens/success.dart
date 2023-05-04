@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minibeat/models/artifact.dart';
 import 'package:minibeat/models/hunted.dart';
-import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/utils/api.dart';
 
 import '../models/player.dart';
@@ -40,8 +39,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                    'Has aconseguit la peça número ${widget.artifactToShow.ImageNumber.toString()}!'),
+                Text('Has aconseguit la peça número ${widget.artifactToShow.ImageNumber.toString()}!', style: TextStyle(fontSize: 16),),
                 Padding(
                   padding: const EdgeInsets.only(top: 55.0, bottom: 28.0),
                   child: ClipRRect(
