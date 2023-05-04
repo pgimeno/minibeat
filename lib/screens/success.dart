@@ -39,8 +39,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                    'Has aconseguit la peça número ${widget.artifactToShow.ImageNumber.toString()}!'),
+                Text('Has aconseguit la peça número ${widget.artifactToShow.ImageNumber.toString()}!', style: TextStyle(fontSize: 13),),
                 Padding(
                   padding: const EdgeInsets.only(top: 55.0, bottom: 28.0),
                   child: ClipRRect(

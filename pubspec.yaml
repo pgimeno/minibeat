@@ -74,6 +74,6 @@ flutter:
   fonts:
     - family: Hind
       fonts:
-        - asset: fonts/Hind-Regular.ttf
+        - asset: fonts/Oxygen-Regular.ttf
 
 
