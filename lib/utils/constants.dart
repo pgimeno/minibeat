@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
 const String kUrlApi = 'https://iescarlesvallbona.atmosfera.net/api';
-
-
 const kMiniBeatMainColor = Color(0xFF657485);
 const kMiniBeatGradientFirst = Color(0xFFb4c15c);
 const kMiniBeatGradientLast = Color(0xFF525921);
-
 const kMiniBeatMainColorLighter = Color(0xFFA6BAC7);
-
 const distanceToSearch = 7;
 const kpointsGainedByArtifact = 100;
-
 const kTermsOfService =
     'Benvingut/da a MinibeatGo! Abans de començar a fer-ne ús, si us plau, llegiu amb atenció els nostres Termes i Condicions.\n\n'
     '🔒 La nostra aplicació només recull i guarda el nom d\'usuari que l\'usuari ingressa per a accedir-hi. No recopilem, emmagatzemem ni compartim cap altra informació personal.\n\n'
