@@ -241,7 +241,7 @@ class RankingButton extends StatelessWidget {
               arguments: {'player': player}); //Missing arguments
         },
         child: Text(
-          'Ranking',
+          'Rànquing',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
@@ -274,7 +274,7 @@ class StartPlayButton extends StatelessWidget {
               arguments: {'userLogged': playerLogged});
         },
         child: Text(
-          'Comença a jugar!',
+          'Buscar peces!',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
