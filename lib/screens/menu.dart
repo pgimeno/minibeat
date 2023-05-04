@@ -198,7 +198,7 @@ class AvatarImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 85.0, bottom: 38.0),
+      padding: const EdgeInsets.only(top: 45.0, bottom: 38.0),
       child: GestureDetector(
         onTap: () {
           final random = Random();
@@ -307,7 +307,7 @@ class PuzzleScreenButton extends StatelessWidget {
               arguments: {'userLogged': playerLogged});
         },
         child: Text(
-          'El meu puzzle',
+          'El meu puzle',
           style: TextStyle(
             fontSize: 16.0,
             color: Colors.white,
@@ -374,7 +374,7 @@ class DisconnectButtonText extends StatelessWidget {
         _logout(context);
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 60.0),
+        padding: const EdgeInsets.only(top: 30.0),
         child: Text(
           'Desconectar',
           style: TextStyle(

@@ -139,7 +139,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                         TextSpan(
                           text: '$progres%',
                           style: TextStyle(
-                              color: kMiniBeatMainColor,
+                              color: kMiniBeatMainColorLighter,
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
@@ -155,7 +155,7 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: kMiniBeatMainColor)),
+                            color: kMiniBeatMainColorLighter)),
                 ]),
               ),
             ),
