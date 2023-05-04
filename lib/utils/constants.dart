@@ -9,7 +9,7 @@ const kMiniBeatGradientLast = Color(0xFF525921);
 
 const kMiniBeatMainColorLighter = Color(0xFFA6BAC7);
 
-const distanceToSearch = 6;
+const distanceToSearch = 7;
 const kpointsGainedByArtifact = 100;
 
 const kTermsOfService =
