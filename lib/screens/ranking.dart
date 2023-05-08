@@ -17,6 +17,7 @@ Future<List<PlayerRanking>?> getRankingFromApi() async {
     for (var player in ranking!) {
       if (player.userName == playerInSession.userName) {
         currentPlayer = PlayerRanking(
+            userId: player.userId,
             position: player.position,
             userName: player.userName,
             totalPoints: player.totalPoints,
@@ -32,14 +33,12 @@ Future<List<PlayerRanking>?> getRankingFromApi() async {
 }
 
 Future<List<PlayerRanking>?> getWinnersFromApi() async {
-
   try {
     List<PlayerRanking>? winners = await getWinners();
     return winners;
   } catch (e) {
     print(e.toString());
   }
-
 }
 
 class RankingScreen extends StatefulWidget {
@@ -49,6 +48,7 @@ class RankingScreen extends StatefulWidget {
 
 class _RankingScreenState extends State<RankingScreen> {
   Map<String, dynamic> arguments = {};
+
   @override
   void initState() {
     super.initState();
@@ -61,11 +61,10 @@ class _RankingScreenState extends State<RankingScreen> {
     winners = getWinnersFromApi();
 
     arguments =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     setState(() {
       currentPlayer = arguments['player'];
     });
-
   }
 
   @override
@@ -90,7 +89,9 @@ class _RankingScreenState extends State<RankingScreen> {
                 'Guanyador/a',
                 style: TextStyle(fontSize: 24),
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               FutureBuilder<List<PlayerRanking>?>(
                 future: winners,
                 builder: (context, snapshot) {
@@ -101,14 +102,16 @@ class _RankingScreenState extends State<RankingScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Image(
-                            image: AssetImage('images/avatars/${firstWinner.avatarId}.png'),
+                            image: AssetImage(
+                                'images/avatars/${firstWinner.avatarId}.png'),
                             height: 100,
                             width: 100,
                           ),
                         ),
-                        Text(firstWinner.userName, style: TextStyle(fontSize: 20)),
-                        Text('Ha sigut la primera en acabar el puzzle!',  style: TextStyle(fontSize: 17)),
-
+                        Text(firstWinner.userName,
+                            style: TextStyle(fontSize: 20)),
+                        Text('Ha sigut la primera en acabar el puzzle!',
+                            style: TextStyle(fontSize: 17)),
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -116,7 +119,10 @@ class _RankingScreenState extends State<RankingScreen> {
                   } else if (snapshot.data == null || snapshot.data!.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Text('🥇Sigues la primera persona en completar el puzzle per aparèixer aquí!', style: TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                      child: Text(
+                          '🥇Sigues la primera persona en completar el puzzle per aparèixer aquí!',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center),
                     );
                   } else {
                     return Center(child: CircularProgressIndicator());
@@ -126,7 +132,7 @@ class _RankingScreenState extends State<RankingScreen> {
 
               // Llista guanyadors
 
-              SizedBox(height:25),
+              SizedBox(height: 25),
               Text(
                 'Rànquing',
                 style: TextStyle(fontSize: 24),
@@ -140,58 +146,67 @@ class _RankingScreenState extends State<RankingScreen> {
                       return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            contentPadding: EdgeInsets.only(
-                                left: 25, top: 10.0, bottom: 10, right: 25),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image(
-                                      image:
-                                          ///images/avatars/$player.avatarID
-                                          AssetImage('images/avatars/'+snapshot.data![index].avatarId.toString()+'.png'),
-                                      height: 60,
-                                      width: 60,
+                          return GestureDetector(
+                            onTap: (){
+                              print('tapped row ${snapshot.data![index].userId}');
+                            },
+                            child: ListTile(
+                              contentPadding: EdgeInsets.only(
+                                  left: 25, top: 10.0, bottom: 10, right: 25),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image(
+                                        image:
+
+                                            ///images/avatars/$player.avatarID
+                                            AssetImage('images/avatars/' +
+                                                snapshot.data![index].avatarId
+                                                    .toString() +
+                                                '.png'),
+                                        height: 60,
+                                        width: 60,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    '#' +
-                                        snapshot.data![index].position
-                                            .toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    snapshot.data![index].userName,
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ]),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 18.0),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.star,
-                                          color: kMiniBeatMainColor),
-                                      SizedBox(width: 4),
-                                      Text(
-                                          snapshot.data![index].totalPoints
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      '#' +
+                                          snapshot.data![index].position
                                               .toString(),
-                                          style: TextStyle(fontSize: 20)),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      snapshot.data![index].userName,
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 18.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.star,
+                                            color: kMiniBeatMainColor),
+                                        SizedBox(width: 4),
+                                        Text(
+                                            snapshot.data![index].totalPoints
+                                                .toString(),
+                                            style: TextStyle(fontSize: 20)),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -227,6 +242,7 @@ class _RankingScreenState extends State<RankingScreen> {
                         for (var player in snapshot.data!) {
                           if (player.userName == currentPlayer.userName) {
                             currentPlayer = PlayerRanking(
+                                userId: player.userId,
                                 position: player.position,
                                 userName: player.userName,
                                 totalPoints: player.totalPoints,
@@ -293,7 +309,10 @@ class UserTile extends StatelessWidget {
             children: [
               Icon(Icons.star, color: kMiniBeatMainColor),
               SizedBox(width: 4),
-              Text(currentPlayer.totalPoints.toString(), style: TextStyle(fontSize: 20),),
+              Text(
+                currentPlayer.totalPoints.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
             ],
           )
         ],
@@ -312,9 +331,11 @@ class UserRankingImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(borderRadius: BorderRadius.circular(50),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(50),
       child: Image(
-        image: AssetImage('images/avatars/'+currentPlayer.avatarId.toString()+'.png'),
+        image: AssetImage(
+            'images/avatars/' + currentPlayer.avatarId.toString() + '.png'),
         height: 60,
         width: 60,
       ),
