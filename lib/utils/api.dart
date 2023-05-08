@@ -34,7 +34,6 @@ Future<List<PlayerRanking>?> getRanking() async {
 
         PlayerRanking player = PlayerRanking(
             position: position,
-            userId: userId,
             userName: userName,
             totalPoints: totalPoints,
             avatarId: avatarId);
@@ -179,7 +178,6 @@ Future<List<PlayerRanking>?> getWinners() async {
 
         PlayerRanking player = PlayerRanking(
             position: position,
-            userId: userId,
             userName: userName,
             totalPoints: totalPoints,
             avatarId: avatarId);
