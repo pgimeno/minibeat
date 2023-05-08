@@ -30,9 +30,11 @@ Future<List<PlayerRanking>?> getRanking() async {
         int totalPoints = playerJson['totalPoints'];
         int position = playerJson['position'];
         int avatarId = playerJson['avatarId'];
+        int userId = playerJson['userId'];
 
         PlayerRanking player = PlayerRanking(
             position: position,
+            userId: userId,
             userName: userName,
             totalPoints: totalPoints,
             avatarId: avatarId);
@@ -173,9 +175,11 @@ Future<List<PlayerRanking>?> getWinners() async {
         int totalPoints = playerJson['totalPoints'];
         int position = playerJson['position'];
         int avatarId = playerJson['avatarId'];
+        int userId = playerJson['userId'];
 
         PlayerRanking player = PlayerRanking(
             position: position,
+            userId: userId,
             userName: userName,
             totalPoints: totalPoints,
             avatarId: avatarId);
