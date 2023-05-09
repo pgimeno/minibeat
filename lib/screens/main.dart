@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minibeat/screens/login.dart';
 import 'package:minibeat/screens/puzzle.dart';
+import 'package:minibeat/screens/puzzle_from_other.dart';
 import 'package:minibeat/screens/radar.dart';
 import 'package:minibeat/screens/ranking.dart';
 import 'package:minibeat/screens/register.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           '/ranking': (context) => RankingScreen(),
           '/puzzle': (context) => PuzzleScreen(),
           '/radar': (context) => RadarScreen(),
-
+          '/puzzleFromOther':(context) => PuzzleFromOtherScreen()
         });
   }
 }

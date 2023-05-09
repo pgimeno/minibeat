@@ -1,6 +1,7 @@
 //Classe model per fer el ranking i omplir el menú
 class PlayerRanking {
   //final int avatarId;
+
   String userName;
   int totalPoints;
   int position;

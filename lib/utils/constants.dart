@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
 const String kUrlApi = 'https://iescarlesvallbona.atmosfera.net/api';
-
-
 const kMiniBeatMainColor = Color(0xFF657485);
 const kMiniBeatGradientFirst = Color(0xFFb4c15c);
 const kMiniBeatGradientLast = Color(0xFF525921);
-
 const kMiniBeatMainColorLighter = Color(0xFFA6BAC7);
-
 const distanceToSearch = 7;
 const kpointsGainedByArtifact = 100;
-
 const kTermsOfService =
     'Benvingut/da a MinibeatGo! Abans de començar a fer-ne ús, si us plau, llegiu amb atenció els nostres Termes i Condicions.\n\n'
     '🔒 La nostra aplicació només recull i guarda el nom d\'usuari que l\'usuari ingressa per a accedir-hi. No recopilem, emmagatzemem ni compartim cap altra informació personal.\n\n'
@@ -20,7 +15,7 @@ const kTermsOfService =
     '🦺 Els usuaris són responsables de la seguretat dels seus noms d\'usuari. No ens fem responsables per cap pèrdua o dany que resulti de l\'ús no autoritzat del seu nom d\'usuari.\n\n'
     '💟 No tolerem cap forma d\'abús, comportament il·lícit o inapropiat. Si l\'usuari incompleix aquesta condició, ens reservem el dret de suspendre o cancel·lar el seu compte sense avís previ.\n\n'
     '🔍 L\'usuari reconeix que l\'ús de la nostra aplicació és sota la seva responsabilitat i que no ens responsabilitzem per cap pèrdua, dany o perjudici resultant de l\'ús de l\'aplicació.\n\n'
-    'Gràcies per fer jugar a MinibeatGo! Si té alguna pregunta o dubte, si us plau, no dubti en contactar\-nos.';
+    'Gràcies per fer jugar a MinibeatGo! Si té alguna pregunta o dubte, si us plau, no dubti en contactar\-nos o dirigir-se al punt d\'informació més proper.';
 
 
 const kHowToUseApp =
